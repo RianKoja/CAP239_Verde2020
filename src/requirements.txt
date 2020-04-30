@@ -1,0 +1,2 @@
+# List dependencies of this project, preferably specifying version number:
+seaborn==0.10.0
