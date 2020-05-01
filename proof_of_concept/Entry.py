@@ -31,4 +31,4 @@ plotlist.makeplots(xls_df, xlsx_name)
 
 input("Press enter to close all and quit")
 
-print("finished" + __file__)
+print("Finished " + __file__)
