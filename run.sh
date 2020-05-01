@@ -28,9 +28,16 @@ if [ $# -lt 1 ]; then
 fi
 
 # Build docker image:
-docker build --build-arg target_dir="./$1" -t runner_$1 -f ./DockerFiles/Dockerfile . || { echo "Building image with $1 failed, exiting $0"; exit 1; }
+docker build --build-arg target_dir="./$1" -t runner_$1 -f ./DockerFiles/Dockerfile . \
+      || { echo "Building image with $1 failed, exiting $0"; exit 1; }
 
 # Run docker image:
-docker run -it --rm -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=unix$DISPLAY "runner_$1" || { echo "Running container for $1 failed, exiting $0"; exit 1; }
+docker run -it --rm \
+           -v /tmp/.X11-unix:/tmp/.X11-unix \
+           -e DISPLAY=unix$DISPLAY \
+           -v "$PATH_SCRIPT/$1/mount:/project/mount" \
+           --user $(id -u):$(id -g) \
+           "runner_$1" \
+           || { echo "Running container for $1 failed, exiting $0"; exit 1; }
 
 echo "Finished $0 script."

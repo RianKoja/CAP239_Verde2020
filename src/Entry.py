@@ -5,3 +5,6 @@
 ########################################################################################################################
 
 print("Hello world!")
+
+with open("mount/sample.txt", "a+") as fid:
+    fid.write("Hello from this file!")
