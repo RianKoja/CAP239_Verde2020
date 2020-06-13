@@ -1,7 +1,6 @@
 ########################################################################################################################
 # Defines a class that handles writing results to a word document.
 #
-#
 # Written by Rian Koja to publish in a GitHub repository with specified licence.
 ########################################################################################################################
 import os
@@ -20,11 +19,11 @@ class ReportDocument:
 
         self.file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'mount')
         file_version = 0
-
-        while os.path.isfile(os.path.join(self.file_path, "Report_v" + str(file_version) + ".docx")):
+        prefix = 'Report_v'
+        while os.path.isfile(os.path.join(self.file_path, prefix + str(file_version) + ".docx")):
             file_version += 1
 
-        self.file_name = "List_RianKoja_v" + str(file_version) + ".docx"
+        self.file_name = prefix + str(file_version) + ".docx"
 
     def add_fig(self, wid=6):
         memfile = BytesIO()
