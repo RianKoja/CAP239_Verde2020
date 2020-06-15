@@ -47,7 +47,7 @@ import datetime
 
 import pandas as pd
 
-from src.tmp_stuff.denis.covid_model_core import run
+from purple_green_covid_model.covid_model_core import run
 from src.tmp_stuff.denis.tools.leitor_de_series import ler_serie_generica_de_arquivo_ou_url
 
 
@@ -82,7 +82,6 @@ class CovidModelConfig:
         self.url_owid_covid_data = 'https://covid.ourworldindata.org/data/owid-covid-data.csv'
         # nome arquivo covid a salvar
         self.nome_arq_covid_completo = './owid-covid-data.csv'
-        self.df_covid_pais_real = None
 
 
 def filtra_e_insere_datas_faltantes(dados_, df_covid_pais):
@@ -91,15 +90,15 @@ def filtra_e_insere_datas_faltantes(dados_, df_covid_pais):
 
     mascara_data = (df_covid_pais_date[dados_.coluna_data] >= dados_.data_inicial) & (
             df_covid_pais_date[dados_.coluna_data] <= dados_.data_final)
-    dados_.df_covid_pais_real = df_covid_pais.loc[mascara_data]
+    df_covid_pais_na_data = df_covid_pais.loc[mascara_data]
 
     # insere datas faltantes
     dates_list = pd.date_range(start=dados_.data_inicial, end=dados_.data_final)
     df_dates = pd.DataFrame(dates_list, columns=["date"])
     df_dates[dados_.coluna_agrupadora_covid] = dados_.valor_coluna_agrupador
     df_dates[dados_.coluna_serie_covid] = 0
-    dados_.df_covid_pais_real.dropna(inplace=True)
-    for index_c, row_c in dados_.df_covid_pais_real.iterrows():
+    df_covid_pais_na_data.dropna(inplace=True)
+    for index_c, row_c in df_covid_pais_na_data.iterrows():
         for index, row in df_dates.iterrows():
             date_time_str = row_c[dados_.coluna_data]
             date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d')
@@ -109,7 +108,8 @@ def filtra_e_insere_datas_faltantes(dados_, df_covid_pais):
                 df_dates.at[index, dados_.coluna_agrupadora_covid] = row_c[dados_.coluna_agrupadora_covid]
                 df_dates.at[index, dados_.coluna_serie_covid] = row_c[dados_.coluna_serie_covid]
                 break
-    dados_.df_covid_pais_real = df_dates
+
+    return df_dates
 
 
 def get_dados_covid_por_agrupador(dados_):
@@ -127,10 +127,4 @@ def get_dados_covid_por_agrupador(dados_):
     is_pais = df_covid_completo[dados_.coluna_agrupadora_covid] == dados_.valor_coluna_agrupador
     df_covid_pais = df_covid_completo[is_pais]
 
-    filtra_e_insere_datas_faltantes(dados_, df_covid_pais)
-
-
-if __name__ == '__main__':
-    cfg = CovidModelConfig('Bolivia', '2020-05-17', '2020-06-13', '2020-05-24')
-    get_dados_covid_por_agrupador(cfg)
-    run(cfg)
+    return filtra_e_insere_datas_faltantes(dados_, df_covid_pais)

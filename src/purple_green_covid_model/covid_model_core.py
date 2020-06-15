@@ -109,14 +109,14 @@ def calcula_extremos(prob_agent, fator_n, n_k_t, g):
     return n8
 
 
-def run(cfg):
+def run(cfg, df_covid_pais_na_data):
     # dias de inicialização
     df_covid_pais_date = pd.DataFrame()
-    df_covid_pais_date[cfg.coluna_data] = pd.to_datetime(cfg.df_covid_pais_real[cfg.coluna_data])
+    df_covid_pais_date[cfg.coluna_data] = pd.to_datetime(df_covid_pais_na_data[cfg.coluna_data])
 
     mascara_data = (df_covid_pais_date[cfg.coluna_data] >= cfg.data_inicial) & (
             df_covid_pais_date[cfg.coluna_data] < cfg.data_inicial_previsao)
-    df_covid_pais_datas_inicializacao = cfg.df_covid_pais_real.loc[mascara_data]
+    df_covid_pais_datas_inicializacao = df_covid_pais_na_data.loc[mascara_data]
     num_dias_inicializacao = len(df_covid_pais_datas_inicializacao)
 
     s = {}
@@ -127,7 +127,7 @@ def run(cfg):
         # dicionario de fator g, por espectro
         g[espectro] = [0.0] * (cfg.N + num_dias_inicializacao + 1)
 
-    n_k_real = cfg.df_covid_pais_real[cfg.coluna_serie_covid].to_list()
+    n_k_real = df_covid_pais_na_data[cfg.coluna_serie_covid].to_list()
 
     # executa para cada espectro de probabilidades
     for espectro_a_executar in cfg.prob_agent.keys():
