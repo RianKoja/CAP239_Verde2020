@@ -47,8 +47,7 @@ import datetime
 
 import pandas as pd
 
-from purple_green_covid_model.covid_model_core import run
-from src.tmp_stuff.denis.tools.leitor_de_series import ler_serie_generica_de_arquivo_ou_url
+from tools.series_reader import ler_serie_generica_de_arquivo_ou_url
 
 
 class CovidModelConfig:
