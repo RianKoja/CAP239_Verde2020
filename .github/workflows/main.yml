@@ -25,7 +25,7 @@ jobs:
           pip install -r src/requirements.txt
           # install black if available (Python 3.6 and above)
           pip install black || true
-      - name: Run main entry file to get result:
+      - name: Run main entry file to generate report
         run: |
           cd ./src 
           python Entry.py
