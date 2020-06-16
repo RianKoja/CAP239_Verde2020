@@ -25,12 +25,21 @@ jobs:
           pip install -r src/requirements.txt
           # install black if available (Python 3.6 and above)
           pip install black || true
-      - name: Run all python files and see if they execute successfully
+      - name: Run main entry file to get result:
         run: |
           cd ./src 
           python Entry.py
-      - name: Upload reports
+      - name: Run on branch branch_renato_ex_02
+        run: |
+          git checkout branch_renato_ex_02
+          python Entry.py
+      - name: Upload reports from main
         uses: actions/upload-artifact@v2
         with:
-          name: report
+          name: report_main
           path: /home/runner/work/CAP239_Verde2020/CAP239_Verde2020/src/mount/Report_v0.docx
+      - name: Upload reports from branch_renato_ex_02
+        uses: actions/upload-artifact@v2
+        with:
+          name: report_branch_renato_ex_02
+          path: /home/runner/work/CAP239_Verde2020/CAP239_Verde2020/src/mount/Report_v1.docx
