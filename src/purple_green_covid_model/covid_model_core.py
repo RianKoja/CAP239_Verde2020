@@ -209,6 +209,7 @@ def run(cfg, df_covid_pais_na_data):
             calcula_media_dia(n_nb7, n_k, cfg.num_dias_para_media, t + 1)
 
         # plot erro
+        plt.close('all')
         plt.figure(figsize=(16, 9))
         len_min_prev_real = min(len(n_k), len(n_k_real))
         err_prev_real = abs((np.array(n_k[0:len_min_prev_real]) - np.array(n_k_real[0:len_min_prev_real])))
@@ -250,6 +251,7 @@ def plot_g_s(cfg, g, s, n_k_real):
     # TODO
     is_plot = False
     # plot Fator de Supressão e g
+    plt.close('all')
     plt.figure(figsize=(16, 9))
     for espectro in s.keys():
         # plot s
