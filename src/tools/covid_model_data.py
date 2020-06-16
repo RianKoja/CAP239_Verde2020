@@ -53,7 +53,7 @@ from src.tmp_stuff.denis.tools.leitor_de_series import ler_serie_generica_de_arq
 
 class CovidModelConfig:
 
-    def __init__(self, valor_col_agrup, data_ini, data_fim, data_ini_prev=None):
+    def __init__(self, valor_col_agrup, data_ini, data_fim, data_ini_prev=None, prob_agents=None):
         self.valor_coluna_agrupador = valor_col_agrup
         self.data_inicial = data_ini
         self.data_final = data_fim
@@ -63,6 +63,11 @@ class CovidModelConfig:
             dates_list = pd.date_range(start=self.data_inicial_previsao, end=self.data_final)
             # dias de previsão ( subtrai 1 para remover o dia de hoje )
             self.N = dates_list.size - 1
+
+        if prob_agents is not None:
+            self.prob_agent = prob_agents
+        else:
+            self.prob_agent = {'Espectro 1': [0.5, 0.45, 0.05], 'Espectro 2': [0.7, 0.25, 0.05]}
 
         self.coluna_agrupadora_covid = 'location'
         self.coluna_serie_covid = 'new_cases'
@@ -74,7 +79,6 @@ class CovidModelConfig:
         self.estrategia_g_inicializacao = 'Media'
         self.g_fixo = 0.25
         self.g0 = 0.2  # 0.2 0.5 0.8
-        self.prob_agent = {'Espectro 1': [0.5, 0.45, 0.05], 'Espectro 2': [0.7, 0.25, 0.05]}
         # valores anteriores
         self.fator_n_min = [1.0, 3.0, 5.0]
         self.fator_n_max = [2.0, 4.0, 6.0]

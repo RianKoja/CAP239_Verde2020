@@ -66,7 +66,7 @@ def inicializa_medias_e_g_no_periodo(g_espectro_inicial, n_nb7, n_k, num_dias_pa
 
 
 def calcula_g_estrategia(n_nb7, n_k, t, estrategia_g='Media', g_fixo=None, prob_agent=None, fator_n_min=None,
-                         fator_n_max=None, g_atual=None):
+                         fator_n_max=None, g_atual=None, estrategia_n8=None):
     if estrategia_g == 'Media':
         n_k_t = n_k[t]
         n_nb7_t = n_nb7[t - 1]
@@ -84,8 +84,8 @@ def calcula_g_estrategia(n_nb7, n_k, t, estrategia_g='Media', g_fixo=None, prob_
     elif estrategia_g == 'Ajuste':
         n_k_t = n_k[t]
         n_nb7_t = n_nb7[t - 1]
-        n8_min = calcula_extremos(prob_agent, fator_n_min, n_k_t, g_atual)
-        n8_max = calcula_extremos(prob_agent, fator_n_max, n_k_t, g_atual)
+        n8_min = calcula_extremos(prob_agent, fator_n_min, n_k_t,  n_k, n_nb7, t, g_atual, estrategia_n8)
+        n8_max = calcula_extremos(prob_agent, fator_n_max, n_k_t,  n_k, n_nb7, t, g_atual, estrategia_n8)
         n_k_t_ajuste = (n8_min + n8_max) / 2
         if n_k_t_ajuste > n_nb7_t:
             g = n_nb7_t / n_k_t_ajuste
@@ -99,17 +99,28 @@ def calcula_g_estrategia(n_nb7, n_k, t, estrategia_g='Media', g_fixo=None, prob_
     return g
 
 
-def calcula_extremos(prob_agent, fator_n, n_k_t, g):
-    n8 = 0
+def calcula_extremos(prob_agent, fator_n, n_k, n_nb7, t, g, estrategia_n8):
+    n_8 = 0
+    n_k_t = n_k[t]
+    n_nb7_t = n_nb7[t - 1]
     for i in range(len(prob_agent)):
-        n8 += prob_agent[i] * fator_n[i]
-    n8 = n8 * g * n_k_t
-    n8 = int(n8)
+        n_8 += prob_agent[i] * fator_n[i]
+    if estrategia_n8 == 'UpDown':
+        if n_k_t < n_nb7_t:
+            n_8 = n_nb7_t - (g * n_k_t)
+        else:
+            n_8 = n_k_t + n_8 * g
+    else:
+        n_8 = n_8 * g * n_k_t
+    n_8 = int(n_8)
 
-    return n8
+    return n_8
 
 
 def run(cfg, df_covid_pais_na_data):
+    # TODO
+    is_plot = False
+
     # dias de inicialização
     df_covid_pais_date = pd.DataFrame()
     df_covid_pais_date[cfg.coluna_data] = pd.to_datetime(df_covid_pais_na_data[cfg.coluna_data])
@@ -164,10 +175,12 @@ def run(cfg, df_covid_pais_na_data):
                                                              fator_n_max=cfg.fator_n_max,
                                                              g_atual=g0)
 
-            # Calculando o valor minimo do intervalo
-            n8_min = calcula_extremos(prob_agent_norm, cfg.fator_n_min, n_k[t], g[espectro_a_executar][t])
+            # Calculando o valor minimo do intervalo n_k, n_nb7, t,  g, estrategia_g
+            n8_min = calcula_extremos(prob_agent_norm, cfg.fator_n_min, n_k, n_nb7, t, g[espectro_a_executar][t],
+                                      cfg.estrategia_n8)
             # Calculando o valor maximo do intervalo
-            n8_max = calcula_extremos(prob_agent_norm, cfg.fator_n_max, n_k[t], g[espectro_a_executar][t])
+            n8_max = calcula_extremos(prob_agent_norm, cfg.fator_n_max, n_k, n_nb7, t, g[espectro_a_executar][t],
+                                      cfg.estrategia_n8)
 
             # Calculando delta_g ...
             q_g = (1 - g[espectro_a_executar][t]) ** 2
@@ -221,12 +234,21 @@ def run(cfg, df_covid_pais_na_data):
         plt.xlabel('dias')
         plt.ylabel(label_serie)
         plt.legend()
-        plt.savefig(
-            './previsao_{}_espctro_{}_estrateg_{}_diasMedia_{}.png'.format(cfg.valor_coluna_agrupador,
-                                                                           espectro_a_executar,
-                                                                           cfg.estrategia_g, cfg.num_dias_para_media))
-        plt.show()
+        if is_plot:
+            plt.savefig(
+                './previsao_{}_espctro_{}_estrateg_{}_diasMedia_{}.png'.format(cfg.valor_coluna_agrupador,
+                                                                               espectro_a_executar,
+                                                                               cfg.estrategia_g,
+                                                                               cfg.num_dias_para_media))
+            plt.show()
+        else:
+            plt.draw()
+    return g, s, n_k, n_k_real
 
+
+def plot_g_s(cfg, g, s, n_k_real):
+    # TODO
+    is_plot = False
     # plot Fator de Supressão e g
     plt.figure(figsize=(16, 9))
     for espectro in s.keys():
@@ -244,7 +266,10 @@ def run(cfg, df_covid_pais_na_data):
     plt.xlabel('dias')
     plt.ylabel('Fator de Supressão e g')
     plt.legend()
-    plt.savefig(
-        './supressao_{}_estrateg_{}_diasMedia_{}.png'.format(cfg.valor_coluna_agrupador, cfg.estrategia_g,
-                                                             cfg.num_dias_para_media))
-    plt.show()
+    if is_plot:
+        plt.savefig(
+            './supressao_{}_estrateg_{}_diasMedia_{}.png'.format(cfg.valor_coluna_agrupador, cfg.estrategia_g,
+                                                                 cfg.num_dias_para_media))
+        plt.show()
+    else:
+        plt.draw()
