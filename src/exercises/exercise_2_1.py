@@ -13,15 +13,15 @@ from scipy.stats import skew, kurtosis
 from tools import getdata, createdocument, cullen_frey_giovanni
 
 
-def run(country_list, report):
-    country_df_list = [getdata.acquire_data(country=country) for country in country_list]
-    for var in country_df_list[0].columns:
+def run(country_objs, report):
+    country_list = [data.country for data in country_objs]
+    for var in country_objs[0].df.columns:
         if var not in ['date', 'index']:
             report.add_heading("Cullen-Frey for " + var)
             skews = list()
             kurt = list()
-            for df in country_df_list:
-                var_list = df[var].to_list()
+            for obj in country_objs:
+                var_list = obj.df[var].to_list()
                 skews.append(skew(var_list))
                 kurt.append(kurtosis(var_list, fisher=False))
 
@@ -31,5 +31,6 @@ def run(country_list, report):
 
 if __name__ == "__main__":
     doc = createdocument.ReportDocument()
-    run(["Brazil", "Italy"], doc)
+    country_objs = [getdata.CountryData(country=country) for country in ["Brazil", "Italy"]]
+    run(country_objs, doc)
     plt.show()

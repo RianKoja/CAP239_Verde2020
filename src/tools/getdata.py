@@ -10,6 +10,13 @@ import os
 import numpy as np
 
 
+# Use this class to create a list of countries:
+class CountryData:
+    def __init__(self, country='United States'):
+        self.country = country
+        self.df = acquire_data(country=country)
+
+
 # Use this function to yield the dataframe to be analyzed.
 def acquire_data(country='United States', date_ini='2020-02-10', date_end='2020-05-20'):
     csv_filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'mount', 'owid-covid-data.csv')
