@@ -4,24 +4,21 @@
 # Written by Rian Koja to publish in a GitHub repository with specified licence.
 ########################################################################################################################
 
-import os
-
 # Standard imports:
 import pandas as pd
+import os
+import numpy as np
 
 
 # Use this class to create a list of countries:
 class CountryData:
-    def __init__(self, country='United States', auto_aquire_data=True):
+    def __init__(self, country='United States'):
         self.country = country
-        self.df = pd.DataFrame()
-        if auto_aquire_data:
-            self.df = acquire_data(country=country)
+        self.df = acquire_data(country=country)
 
 
 # Use this function to yield the dataframe to be analyzed.
-def acquire_data(country='United States', date_ini='2020-02-10', date_end='2020-05-20', is_drop_na=True,
-                 start_after_new_cases=50):
+def acquire_data(country='United States', date_ini='2020-02-10', date_end='2020-05-20'):
     csv_filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'mount', 'owid-covid-data.csv')
 
     if os.path.isfile(csv_filename):  # Read the csv file:
@@ -39,24 +36,18 @@ def acquire_data(country='United States', date_ini='2020-02-10', date_end='2020-
     # Separate date interval:
     df = df[df.date.between(date_ini, date_end, inclusive=True)]
     # Separate useful columns:
-    wanted_columns = get_wanted_methods()
+    wanted_columns = ['date', 'total_cases', 'new_cases', 'total_deaths', 'new_deaths']
     if country == 'all':
         wanted_columns.append('location')
     df = df[wanted_columns]
     # Remove incomplete data:
-    if is_drop_na:
-        df.dropna(inplace=True)
+    df.dropna(inplace=True)
     # Reset index before next loop:
     df.reset_index(inplace=True)
     # Provide data only after the first day with 50+ new cases
     for ii in range(0, len(df)):
-        if df.loc[ii, 'new_cases'] >= start_after_new_cases:
+        if df.loc[ii, 'new_cases'] >= 50:
             df = df.drop(range(0, max([0, ii])))
             break
     # df.to_excel('test_df.xlsx') # Use to visualize selected data in excel.
     return df
-
-
-def get_wanted_methods():
-    wanted_columns = ['date', 'total_cases', 'new_cases', 'total_deaths', 'new_deaths', 'total_tests', 'new_tests']
-    return wanted_columns
