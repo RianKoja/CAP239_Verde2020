@@ -1,4 +1,5 @@
 .vscode
 .idea
 *.docx
+*.png
 __pycache__
