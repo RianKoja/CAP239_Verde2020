@@ -20,7 +20,7 @@ class CountryData:
 
 
 # Use this function to yield the dataframe to be analyzed.
-def acquire_data(country='United States', date_ini='2020-02-10', date_end='2020-05-20', is_drop_na=True,
+def acquire_data(country='United States', date_ini='2020-02-10', date_end='2020-05-20', acquire_tests=True,
                  start_after_new_cases=50):
     csv_filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'mount', 'owid-covid-data.csv')
 
@@ -39,13 +39,14 @@ def acquire_data(country='United States', date_ini='2020-02-10', date_end='2020-
     # Separate date interval:
     df = df[df.date.between(date_ini, date_end, inclusive=True)]
     # Separate useful columns:
-    wanted_columns = get_wanted_methods()
+    if acquire_tests==True:
+        wanted_columns = ['date', 'total_cases', 'new_cases', 'total_deaths', 'new_deaths', 'total_tests', 'new_tests']
+    else:
+        wanted_columns = ['date', 'total_cases', 'new_cases', 'total_deaths', 'new_deaths']
+        df.dropna(inplace=True)
     if country == 'all':
         wanted_columns.append('location')
-    df = df[wanted_columns]
-    # Remove incomplete data:
-    if is_drop_na:
-        df.dropna(inplace=True)
+    df = df[wanted_columns]    
     # Reset index before next loop:
     df.reset_index(inplace=True)
     # Provide data only after the first day with 50+ new cases
@@ -57,6 +58,3 @@ def acquire_data(country='United States', date_ini='2020-02-10', date_end='2020-
     return df
 
 
-def get_wanted_methods():
-    wanted_columns = ['date', 'total_cases', 'new_cases', 'total_deaths', 'new_deaths', 'total_tests', 'new_tests']
-    return wanted_columns
