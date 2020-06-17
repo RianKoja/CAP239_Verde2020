@@ -17,6 +17,11 @@ country_list = ["Brazil", "Portugal", "Spain", "France", "Belgium", "United Stat
 
 # Add cullen-Frey charts:
 exercise_2_1.run(country_list, report)
+# Add ICMSF-Covid-19 predictions:
+exercise_3.makePredict(df["new_cases"], country, doc=report)
+
+# Add Modified-ICMSF-Covid-19 predictions:
+exercise_4.makePredict_v2(df["new_cases"], country, doc=report)
 
 report.finish()
 
