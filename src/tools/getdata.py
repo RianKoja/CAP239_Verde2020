@@ -18,7 +18,7 @@ class CountryData:
 
 
 # Use this function to yield the dataframe to be analyzed.
-def acquire_data(country='United States', date_ini='2020-02-10', date_end='2020-05-20'):
+def acquire_data(country='United States', date_ini='2020-02-10', date_end='2020-05-20', include_tests=False):
     csv_filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'mount', 'owid-covid-data.csv')
 
     if os.path.isfile(csv_filename):  # Read the csv file:
@@ -36,7 +36,10 @@ def acquire_data(country='United States', date_ini='2020-02-10', date_end='2020-
     # Separate date interval:
     df = df[df.date.between(date_ini, date_end, inclusive=True)]
     # Separate useful columns:
-    wanted_columns = ['date', 'total_cases', 'new_cases', 'total_deaths', 'new_deaths']
+    if include_tests == False:
+        wanted_columns = ['date', 'total_cases', 'new_cases', 'total_deaths', 'new_deaths']
+    else:
+        wanted_columns = ['date', 'total_cases', 'new_cases', 'total_deaths', 'new_deaths', 'new_tests']
     if country == 'all':
         wanted_columns.append('location')
     df = df[wanted_columns]
