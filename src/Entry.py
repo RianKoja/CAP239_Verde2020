@@ -16,7 +16,7 @@ country_list = ["Brazil", "Portugal", "Spain", "France", "Belgium", "United Stat
 country_objs = [getdata.CountryData(country=country) for country in country_list]
 
 # Add cullen-Frey charts:
-# exercise_2_1.run(country_objs, report)
+exercise_2_1.run(country_objs, report)
 
 # Add ICMSF-Covid-19 predictions:
 # exercise_3.makePredict(df["new_cases"], country, doc=report)
