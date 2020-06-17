@@ -25,7 +25,7 @@ country_objs = [getdata.CountryData(country=country) for country in country_list
 # exercise_4.makePredict_v2(df["new_cases"], country, doc=report)
 
 # SOC in days and hours
-exercise_5.run(country_objs, ['new_cases', 'new_deaths', 'new_tests'], report, '2020-03-18', '2020-06-05', 23)
+#exercise_5.run(country_objs, ['new_cases', 'new_deaths', 'new_tests'], report, '2020-03-18', '2020-06-05', 23)
 
 report.finish()
 
