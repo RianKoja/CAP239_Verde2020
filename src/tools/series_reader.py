@@ -22,12 +22,13 @@
 #
 # TODO - Ler JSON, XML, EXCEL
 
-import numpy as np
 import mimetypes
-import pandas as pd
-import magic
 import os
 from urllib.parse import urlparse
+
+import magic
+import numpy as np
+import pandas as pd
 import requests
 
 
