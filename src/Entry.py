@@ -5,7 +5,7 @@
 
 # Local imports:
 from tools import createdocument, cullen_frey_giovanni, getdata
-from exercises import exercise_2_1
+from exercises import exercise_2_1, exercise_3, exercise_4
 
 
 print("Started ", __file__)
