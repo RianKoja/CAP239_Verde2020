@@ -25,7 +25,7 @@ def run(country_list, report):
                 skews.append(skew(var_list))
                 kurt.append(kurtosis(var_list, fisher=False))
 
-            cullen_frey_giovanni.cullenfrey(skews, kurt, country_list, var)
+            cullen_frey_giovanni.cullenfrey(skews, kurt, country_list, var.replace("_", " ").title())
             report.add_fig()
 
 

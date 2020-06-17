@@ -12,16 +12,16 @@ import numpy as np
 
 # Use this function to yield the dataframe to be analyzed.
 def acquire_data(country='United States', date_ini='2020-02-10', date_end='2020-05-20'):
-    xls_filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'data', 'covid-19-data',
-                                'owid-covid-data.xlsx')
+    csv_filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'mount', 'owid-covid-data.csv')
 
-    if os.path.isfile(xls_filename):  # Read the csv file:
-        print("Using local data for COVID-19 cases...")
-        df = pd.read_excel(xls_filename, index_col=None)
+    if os.path.isfile(csv_filename):  # Read the csv file:
+        df = pd.read_csv(csv_filename, index_col=None)
     else:
-        print("Using data online for COVID-19 cases...")
+        print("Downloading COVID-19 data...")
         url = 'https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv'
         df = pd.read_csv(url, index_col=None)
+        # Save locally to avoid downloading repeatedly:
+        df.to_csv(csv_filename, index=False)
 
     # Separate country data:
     if country != 'all':

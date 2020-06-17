@@ -34,7 +34,6 @@ def cullenfrey(skews, kurt, legend, title):
     colors = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple', 'tab:brown', 'tab:pink', 'tab:gray',
               'tab:olive', 'tab:cyan']
     for xx, yy, label, color, in zip(xd, yd, legend, colors):
-        print("xx =", xx, "yy =", yy, 'label =', label)
         ax.plot(xx, yy, marker="o", label=label, linestyle='', c=color)
     ax.plot(0, 4.187999875999753, label="logistic", marker='+', c='black', linestyle='None')
     ax.plot(0, 1.7962675925351856, label="uniform", marker='^', c='black', linestyle='None')

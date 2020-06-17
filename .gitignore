@@ -2,4 +2,5 @@
 .idea
 *.docx
 *.png
+*.csv
 __pycache__
