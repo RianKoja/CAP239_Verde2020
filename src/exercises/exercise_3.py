@@ -11,4 +11,4 @@ def run(country_list, doc):
     country_list.sort()
     for country in country_list:
         df=getdata.acquire_data(country)
-        IMCSF_Covid_19.makePredict(df["new_cases"], country, savegraphs=False, doc)
+        IMCSF_Covid_19.makePredict(df["new_cases"], country, savegraphs=False, doc=doc)
