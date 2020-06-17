@@ -3,7 +3,7 @@
 #
 ########################################################################################################################
 
-from exercises import exercise_5
+from exercises import exercise_2_1, exercise_5
 # Local imports:
 from tools import createdocument, getdata
 
