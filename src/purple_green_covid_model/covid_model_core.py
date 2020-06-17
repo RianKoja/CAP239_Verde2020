@@ -46,6 +46,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from tools.covid_model_data import generate_values_in_serie
+
 
 def calcula_media_dia(n_nb7, n_k, num_dias_para_media, indice_atual):
     n_nb7[indice_atual] = np.mean(n_k[max(indice_atual - num_dias_para_media + 1, 0): indice_atual + 1])
@@ -84,8 +86,8 @@ def calcula_g_estrategia(n_nb7, n_k, t, estrategia_g='Media', g_fixo=None, prob_
     elif estrategia_g == 'Ajuste':
         n_k_t = n_k[t]
         n_nb7_t = n_nb7[t - 1]
-        n8_min = calcula_extremos(prob_agent, fator_n_min, n_k_t,  n_k, n_nb7, t, g_atual, estrategia_n8)
-        n8_max = calcula_extremos(prob_agent, fator_n_max, n_k_t,  n_k, n_nb7, t, g_atual, estrategia_n8)
+        n8_min = calcula_extremos(prob_agent, fator_n_min, n_k_t, n_k, n_nb7, t, g_atual, estrategia_n8)
+        n8_max = calcula_extremos(prob_agent, fator_n_max, n_k_t, n_k, n_nb7, t, g_atual, estrategia_n8)
         n_k_t_ajuste = (n8_min + n8_max) / 2
         if n_k_t_ajuste > n_nb7_t:
             g = n_nb7_t / n_k_t_ajuste
@@ -117,9 +119,19 @@ def calcula_extremos(prob_agent, fator_n, n_k, n_nb7, t, g, estrategia_n8):
     return n_8
 
 
-def run(cfg, df_covid_pais_na_data):
+def run(cfg, df_covid_pais_na_data, num_between_lines=0):
     # TODO
     is_plot = False
+
+    if num_between_lines > 0:
+        cfg.N = (cfg.N * num_between_lines) + 1
+        df_covid_pais_real = generate_values_in_serie(df_covid_pais_na_data, [cfg.coluna_serie_covid],
+                                                      num_between_lines, is_random=False)
+        n_k_real = df_covid_pais_real[cfg.coluna_serie_covid].to_list()
+        df_covid_pais_na_data = generate_values_in_serie(df_covid_pais_na_data, [cfg.coluna_serie_covid],
+                                                         num_between_lines)
+    else:
+        n_k_real = df_covid_pais_na_data[cfg.coluna_serie_covid].to_list()
 
     # dias de inicialização
     df_covid_pais_date = pd.DataFrame()
@@ -138,7 +150,7 @@ def run(cfg, df_covid_pais_na_data):
         # dicionario de fator g, por espectro
         g[espectro] = [0.0] * (cfg.N + num_dias_inicializacao + 1)
 
-    n_k_real = df_covid_pais_na_data[cfg.coluna_serie_covid].to_list()
+    # n_k_real = df_covid_pais_na_data[cfg.coluna_serie_covid].to_list()
 
     # executa para cada espectro de probabilidades
     for espectro_a_executar in cfg.prob_agent.keys():
