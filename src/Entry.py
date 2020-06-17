@@ -19,7 +19,7 @@ country_objs = [getdata.CountryData(country=country) for country in country_list
 exercise_2_1.run(country_objs, report)
 
 # Add ICMSF-Covid-19 predictions:
-exercise_3.run(country_list, doc=report)
+# exercise_3.run(country_list, doc=report)
 
 # Add Modified-ICMSF-Covid-19 predictions:
 # exercise_4.makePredict_v2(df["new_cases"], country, doc=report)
