@@ -4,9 +4,9 @@
 ########################################################################################################################
 
 from purple_green_covid_model.covid_model_core import run, plot_g_s
+from purple_green_covid_model.covid_model_data import get_dados_covid_por_agrupador, CovidModelConfig
 # Local imports:
 from tools import createdocument, soc_plot
-from tools.covid_model_data import get_dados_covid_por_agrupador, CovidModelConfig
 
 print("Started ", __file__)
 

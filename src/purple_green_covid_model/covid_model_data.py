@@ -45,10 +45,9 @@
 
 import datetime
 
-import numpy as np
 import pandas as pd
 
-from tools.series_reader import ler_serie_generica_de_arquivo_ou_url
+from tools.series_reader import read_generic_serie_from_file_or_url
 
 
 class CovidModelConfig:
@@ -119,12 +118,12 @@ def filtra_e_insere_datas_faltantes(dados_, df_covid_pais):
 def get_dados_covid_por_agrupador(dados_):
     # obtém dados da covid e atualiza se especificado
     if dados_.is_atualizar_arquivo_covid:
-        df_covid_completo = ler_serie_generica_de_arquivo_ou_url(dados_.url_owid_covid_data,
-                                                                 is_obter_csv_como_dataframe=True,
-                                                                 is_url=True)
+        df_covid_completo = read_generic_serie_from_file_or_url(dados_.url_owid_covid_data,
+                                                                is_obter_csv_como_dataframe=True,
+                                                                is_url=True)
     else:
-        df_covid_completo = ler_serie_generica_de_arquivo_ou_url(dados_.nome_arq_covid_completo,
-                                                                 is_obter_csv_como_dataframe=True)
+        df_covid_completo = read_generic_serie_from_file_or_url(dados_.nome_arq_covid_completo,
+                                                                is_obter_csv_como_dataframe=True)
     # seleciona por agrupador (Ex. location)
     df_covid_completo = df_covid_completo[
         [dados_.coluna_agrupadora_covid, dados_.coluna_data, dados_.coluna_serie_covid]]
@@ -132,35 +131,3 @@ def get_dados_covid_por_agrupador(dados_):
     df_covid_pais = df_covid_completo[is_pais]
 
     return filtra_e_insere_datas_faltantes(dados_, df_covid_pais)
-
-
-def generate_values_in_serie(df_serie, columns, num_of_values, is_random=True):
-    df_time = pd.DataFrame()
-    for index, row in df_serie.iterrows():
-        # df_new = pd.DataFrame(row)
-        df_time = df_time.append(row.copy())
-
-        dic_rand_cols = {}
-        for column in columns:
-            if is_random:
-                dic_rand_cols[column] = np.random.dirichlet(np.ones(num_of_values), size=1).flatten() * row[column]
-            else:
-                dic_rand_cols[column] = [row[column]] * num_of_values
-        for i in range(num_of_values):
-            df_new_row = pd.Series()
-            for column in columns:
-                df_new_row[column] = dic_rand_cols[column][i]
-            df_time = df_time.append(df_new_row, ignore_index=True)
-            # df_time = pd.concat([[df_time, df_new_col]])
-
-    return df_time
-
-
-if __name__ == '__main__':
-    df = pd.DataFrame()
-    sales = [{'account': 'Jones LLC', 'Jan': 150, 'Feb': 200, 'Mar': 140},
-             {'account': 'Alpha Co', 'Jan': 200, 'Feb': 210, 'Mar': 215},
-             {'account': 'Blue Inc', 'Jan': 50, 'Feb': 90, 'Mar': 95}]
-    df = pd.DataFrame(sales)
-    df = generate_values_in_serie(df, ['Jan', 'Feb', 'Mar'], 2)
-    print(df)

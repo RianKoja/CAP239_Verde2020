@@ -1,4 +1,3 @@
-# Matemática Computacional I - parte B - Prova
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # 1o período 2020
@@ -32,7 +31,7 @@ import pandas as pd
 import requests
 
 
-def ler_serie_generica_de_arquivo_ou_url(nome_arquivo_ou_url, is_url=False, is_obter_csv_como_dataframe=False):
+def read_generic_serie_from_file_or_url(nome_arquivo_ou_url, is_url=False, is_obter_csv_como_dataframe=False):
     if is_url:
         a = urlparse(nome_arquivo_ou_url)
         nome_arquivo = os.path.basename(a.path)
@@ -75,13 +74,13 @@ def ler_serie_generica_de_arquivo_ou_url(nome_arquivo_ou_url, is_url=False, is_o
                     try:
                         arr_primeira_linha_str = f.readline().split()
                         arr_primeira_linha = [float(x) for x in arr_primeira_linha_str]
-                        arr_serie = converter_array_para_valor(arr_primeira_linha, arr_serie)
+                        arr_serie = converte_array_to_value(arr_primeira_linha, arr_serie)
                     except:
                         print('Primeira linha é cabeçalho: {}'.format(arr_primeira_linha_str))
 
                     for arr_linha in f.readlines():
                         arr_linha = [float(x) for x in arr_linha.split()]
-                        arr_serie = converter_array_para_valor(arr_linha, arr_serie)
+                        arr_serie = converte_array_to_value(arr_linha, arr_serie)
 
         else:
             print("Não é um arquivo texto. Ainda não é possível abrir esse tipo de arquivo")
@@ -89,7 +88,7 @@ def ler_serie_generica_de_arquivo_ou_url(nome_arquivo_ou_url, is_url=False, is_o
     return arr_serie
 
 
-def converter_array_para_valor(arr_linha, arr_serie):
+def converte_array_to_value(arr_linha, arr_serie):
     # apenas uma coluna
     if len(arr_linha) == 1:
         arr_linha = np.array(arr_linha).flatten()[0]

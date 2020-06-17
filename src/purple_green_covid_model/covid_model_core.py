@@ -46,7 +46,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from tools.covid_model_data import generate_values_in_serie
+from tools.series_tools import generate_values_in_serie
 
 
 def calcula_media_dia(n_nb7, n_k, num_dias_para_media, indice_atual):
