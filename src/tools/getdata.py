@@ -20,7 +20,7 @@ class CountryData:
 
 
 # Use this function to yield the dataframe to be analyzed.
-def acquire_data(country='United States', date_ini='2020-02-10', date_end='2020-05-20', acquire_tests=True,
+def acquire_data(country='United States', date_ini='2020-02-10', date_end='2020-05-20', acquire_tests=False,
                  start_after_new_cases=50):
     csv_filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'mount', 'owid-covid-data.csv')
 
