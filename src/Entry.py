@@ -3,7 +3,7 @@
 #
 ########################################################################################################################
 
-from exercises import exercise_2_1, exercise_3, exercise_5
+from exercises import exercise_2_1, exercise_3, exercise_4, exercise_5
 # Local imports:
 from tools import createdocument, getdata
 
@@ -27,7 +27,7 @@ exercise_2_1.run(country_objs, report)
 exercise_3.run(country_objs, doc=report)
 
 # Add Modified-ICMSF-Covid-19 predictions:
-# exercise_4.makePredict_v2(df["new_cases"], country, doc=report)
+exercise_4.run(country_objs, doc=report)
 
 # SOC in days and hours
 exercise_5.run(report, '2020-03-18', '2020-06-05', 23, country_list)
