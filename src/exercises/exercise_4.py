@@ -19,9 +19,9 @@ from tools import imcsf_covid_19_modified, getdata, createdocument
 
 
 def run(country_objs, doc):
-    for obj in country_objs:
-        imcsf_covid_19_modified.make_predict_v2(obj.df["new_cases"].to_list(),
-                                    obj.country, doc=doc)
+    #for obj in country_objs:
+    imcsf_covid_19_modified.make_predict_v2(Brazil.df["new_cases"].to_list(),
+                                    "Brazil", doc=doc)
 
 
 if __name__ == '__main__':
