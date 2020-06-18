@@ -17,7 +17,7 @@ def run_plot_and_soc(country_objs, points_in_series_num, report):
 
     for column in ['new_cases', 'new_deaths', 'new_tests']:
         title = "Series plot of {} in days".format(column.capitalize())
-        report.add_heading(title, level=4)
+        report.add_heading(title, level=3)
         soc_plot.init_plot()
         for country_obj in country_objs:
             country_values = country_obj.df[column].to_list()
@@ -30,7 +30,7 @@ def run_plot_and_soc(country_objs, points_in_series_num, report):
         report.add_fig()
 
         title = "Serie plot of {} in hours".format(column.capitalize())
-        report.add_heading(title, level=4)
+        report.add_heading(title, level=3)
         soc_plot.init_plot()
         dic_country_time = {}
         for country_obj in country_objs:
@@ -47,7 +47,7 @@ def run_plot_and_soc(country_objs, points_in_series_num, report):
         report.add_fig()
 
         title = "SOC plot of {} in days".format(column.capitalize())
-        report.add_heading(title, level=4)
+        report.add_heading(title, level=3)
         soc_plot.init_plot()
         for country_obj in country_objs:
             try:
@@ -58,7 +58,7 @@ def run_plot_and_soc(country_objs, points_in_series_num, report):
         report.add_fig()
 
         title = "SOC plot of {} suspects in hours".format(column.capitalize())
-        report.add_heading(title, level=4)
+        report.add_heading(title, level=3)
         soc_plot.init_plot()
         for country_obj in country_objs:
             try:
@@ -71,7 +71,7 @@ def run_plot_and_soc(country_objs, points_in_series_num, report):
 
 def run(report, date_ini, date_end, points_betw_days, country_list):
     title = "SOC plot for all countries. Date from {} to {}".format(date_ini, date_end)
-    report.add_heading(title, level=3)
+    report.add_heading(title, level=2)
     country_objs = [getdata.CountryData(country=country, date_ini=date_ini, date_end=date_end, do_dropna=False,
                                         start_after_new_cases=0, acquire_tests=True) for country in country_list]
     run_plot_and_soc(country_objs, points_betw_days, report)

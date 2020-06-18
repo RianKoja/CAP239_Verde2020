@@ -5,11 +5,20 @@ Created on Wed Jun 17 17:51:03 2020
 @author: Giovanni Guarnieri Soares
 """
 
-from tools import IMCSF_Covid_19, getdata
+import matplotlib.pyplot as plt
+
+from tools import imcsf_covid_19, getdata, createdocument
 
 
-def run(country_list, doc):
-    country_list.sort()
-    for country in country_list:
-        df = getdata.acquire_data(country)
-        IMCSF_Covid_19.makePredict(df["new_cases"], country, savegraphs=False, doc=doc)
+def run(country_objs, doc):
+    for obj in country_objs:
+        imcsf_covid_19.make_predict(obj.df["new_cases"].to_list(), obj.country, savegraphs=False, doc=doc)
+
+
+if __name__ == '__main__':
+    countries = ["Brazil", "Italy"]
+    obj_list = [getdata.CountryData(country=country) for country in countries]
+    report = createdocument.ReportDocument()
+    run(obj_list, report)
+    report.finish()
+    plt.show()
