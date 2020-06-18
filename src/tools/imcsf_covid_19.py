@@ -90,7 +90,7 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
             plt.show()
         else:
             doc.add_fig()
-
+        plt.close('all')
 
         '''
         Here we start to predict without the backup from original data, and we're going
@@ -137,6 +137,7 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
             plt.show()
         else:
             doc.add_fig()
+        plt.close('all')
         predictg = np.array(predictg)
         # meanpredictg = abs(sum(predictg)/len(predictg)-predictg)
         fig, ax1 = plt.subplots()

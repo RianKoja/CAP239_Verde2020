@@ -1,8 +1,8 @@
 ########################################################################################################################
-# Create Cullen-Frey chart to compare COVID-19 data series in different countries and add them to a docx report.
+# Plot Probability Density Functions for Time series.
 #
 #
-# Written by Rian Koja and Giovani Guarnieri to publish in a GitHub repository with specified licence.
+# Written by Renato BRanco and adapted by Rian Koja to publish in a GitHub repository with specified licence.
 ########################################################################################################################
 
 # Standard imports:
@@ -17,31 +17,29 @@ from tools import stat, plot_ajuste
 def run(country_objs, report):
     country_list = [data.country for data in country_objs]    
     for var in country_objs[0].df.columns:
-        if var not in ['date', 'index', 'new_tests']:
-            #adicionar o título do tipo de informação analisada
+        if var not in ['date', 'index', 'total_deaths', 'total_cases']:
+            # Add title for info to be analyzed:
             report.add_heading("Data Type: " + var)
-            #corre os países para agrupar os gráficos dos países por coluna analisada
+            # run for countries to group graphs by country and data type:
             for obj in country_objs:
                 sinal = obj.df[var].to_list()
-                #sinal = country_objs[i][var].to_list()
                 plot_ajuste.plotajuste_completo(sinal, 30, var+" PDF Adjustment \n"+obj.country)
+                plt.grid('both')
+                plt.legend()
                 report.add_fig()
                 plot_ajuste.plothistograma(sinal, 30, var+" Histogram \n"+obj.country)
+                plt.grid('both')
                 report.add_fig()
                 
                 plt.close("all")
-            
-            
 
-    
 
 if __name__ == "__main__":
     doc = createdocument.ReportDocument()
-    country_objs = [getdata.CountryData(country=country) for country in ["Brazil", "Italy"]]
-    run(country_objs, doc)
+    data_objs = [getdata.CountryData(country=country) for country in ["Brazil", "Italy"]]
+    run(data_objs, doc)
     
     doc.finish()
     
     plt.show()
-    
-    
+

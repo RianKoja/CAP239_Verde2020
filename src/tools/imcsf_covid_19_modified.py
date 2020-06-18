@@ -115,6 +115,7 @@ def make_predict_v2(y, country, doc=None):
         plt.show()
     else:
         doc.add_fig()
+    plt.close('all')
     if QTD == 1:
         plt.figure()
         plt.title("Best values of g")
@@ -129,7 +130,7 @@ def make_predict_v2(y, country, doc=None):
             plt.show()
         else:
             doc.add_fig()
-
+        plt.close('all')
         bestguess.pop()
         bestg.pop()
         bestguess = bestguess+list(predictNmed)
@@ -162,6 +163,7 @@ def make_predict_v2(y, country, doc=None):
             plt.show()
         else:
             doc.add_fig()
+        plt.close('all')
 
 
 def main():

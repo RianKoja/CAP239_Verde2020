@@ -5,7 +5,7 @@
 
 # Local imports:
 from tools import createdocument, getdata
-from exercises import exercise_2_1, exercise_2_x, exercise_3, exercise_4, exercise_5
+from exercises import exercise_2_1, exercise_2_2, exercise_2_x, exercise_3, exercise_4, exercise_5
 
 
 print("Started ", __file__)
@@ -20,7 +20,7 @@ report.add_heading("Item 2", level=2)
 # Add cullen-Frey charts:
 exercise_2_1.run(country_objs, report)
 
-# exercise_2_2.run(country_objs, report)
+exercise_2_2.run(country_objs, report)
 # exercise_2_2b.run(country_objs, report)
 # exercise_2_2c.run(country_objs, report)
 # exercise_2_2d.run(country_objs, report)
