@@ -24,14 +24,13 @@ exercise_2_1.run(country_objs, report)
 # exercise_2_2d.run(country_objs, report)
 
 # Add ICMSF-Covid-19 predictions:
-# exercise_3.run(country_list, doc=report)
+exercise_3.run(country_objs, doc=report)
 
 # Add Modified-ICMSF-Covid-19 predictions:
 # exercise_4.makePredict_v2(df["new_cases"], country, doc=report)
 
 # SOC in days and hours
-exercise_5.run(report, '2020-03-18', '2020-06-05', 23,
-               country_list)
+exercise_5.run(report, '2020-03-18', '2020-06-05', 23, country_list)
 
 report.finish()
 
