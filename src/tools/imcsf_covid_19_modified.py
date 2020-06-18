@@ -46,7 +46,7 @@ def make_predict_v2(y, country, doc=None):
     plt.ylabel("New Cases")
     plt.xlabel("Days")
     plt.title("Data for {}".format(country))
-    plt.plot(range(len(y)), y, label="Data")
+    plt.plot(range(len(y)), y, label="New Daily Cases")
     plt.fill_between(range(len(Nminl)), Nminl, Nmaxl, alpha=0.2,
                      color='limegreen',
                      label=r'$N_{min}$ $N_{max}$ forecast band')
@@ -94,11 +94,12 @@ def make_predict_v2(y, country, doc=None):
             newglist.append(glist[ind])
         media.append(predictNmed)
     I = (np.ones((QTD)))
+    plt.figure()
     predictNmed = np.dot(I, media)/QTD
     plt.ylabel("New Cases")
     plt.xlabel("Days")
     plt.title("Prediction for {}\n{} days".format(country,pred))
-    plt.plot(range(len(y)), y, label="Dados")
+    plt.plot(range(len(y)), y, label="New Daily Cases")
     plt.plot(range(len(bestguess)), bestguess, label="Nmed", c="orange")
     # plt.plot(range(len(Nminl)), Nminl,label="Nmin", c="orange")
     # plt.plot(range(len(Nmaxl)), Nmaxl,label="Nmax", c="red")
