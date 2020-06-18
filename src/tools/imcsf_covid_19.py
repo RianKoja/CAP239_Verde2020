@@ -166,6 +166,7 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
         # meanpredicts = abs(sum(predicts)/len(predicts)-predicts)
         ax2.set_xlabel("Day")
         ax2.set_ylabel("s")
+        plt.tight_layout()
         ax2.plot(range(len(s)), s, c="firebrick", label="s from data")
         # plt.errorbar(range(len(s)), s, yerr=means, xerr=0, hold=True, ecolor='k',
         # fmt='none', label='data', elinewidth=0.5, capsize=1)
