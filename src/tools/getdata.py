@@ -12,7 +12,7 @@ import pandas as pd
 
 # Use this class to create a list of countries:
 class CountryData:
-    def __init__(self, country='United States', acquire_tests=False, do_dropna=True, date_ini='2020-02-10',
+    def __init__(self, country='United States', acquire_tests=False, do_dropna=True, date_ini='2020-01-10',
                  date_end='2020-05-20', start_after_new_cases=50):
         self.country = country
         self.df = acquire_data(country=country, acquire_tests=acquire_tests, do_dropna=do_dropna, date_ini=date_ini,
