@@ -13,19 +13,17 @@ import matplotlib.pyplot as plt
 from tools import getdata, createdocument, series_tools, soc_plot
 
 
-def run_plot_and_soc(country_objs, columns, points_in_series_num, report):
-    for ct in country_objs:
-        print("Days for {} = {}".format(ct.country, ct.df.size))
+def run_plot_and_soc(country_objs, points_in_series_num, report):
 
-    for column in columns:
-        title = "Serie plot of {} in days".format(column.capitalize())
+    for column in ['new_cases', 'new_deaths', 'new_tests']:
+        title = "Series plot of {} in days".format(column.capitalize())
         report.add_heading(title, level=4)
         soc_plot.init_plot()
         for country_obj in country_objs:
             country_values = country_obj.df[column].to_list()
             plt.plot(range(len(country_values)), country_values, label=country_obj.country)
             plt.title(title)
-            plt.xlabel('days')
+            plt.xlabel('Days')
             plt.ylabel(column.capitalize())
             plt.legend()
         plt.draw()
@@ -54,8 +52,7 @@ def run_plot_and_soc(country_objs, columns, points_in_series_num, report):
         for country_obj in country_objs:
             try:
                 soc_plot.addplot(country_obj.df[column].to_list(), country_obj.country)
-            except Exception as e:
-                print(e)
+            except ValueError:
                 pass
         soc_plot.plot(title)
         report.add_fig()
@@ -66,28 +63,23 @@ def run_plot_and_soc(country_objs, columns, points_in_series_num, report):
         for country_obj in country_objs:
             try:
                 soc_plot.addplot(dic_country_time[country_obj.country], country_obj.country)
-            except Exception as e:
-                print(e)
+            except ValueError:
                 pass
         soc_plot.plot(title)
         report.add_fig()
 
 
-def run(country_objs_, columns, report, date_ini, date_end, points_betw_days):
-    title = "SOC Series and plot of {} for all countries. Date from {} to {}".format(', '.join(columns),
-                                                                                     date_ini, date_end)
+def run(report, date_ini, date_end, points_betw_days, country_list):
+    title = "SOC plot for all countries. Date from {} to {}".format(date_ini, date_end)
     report.add_heading(title, level=3)
-    country_objs = country_objs_.copy()
-    for country in country_objs:
-        country.df = getdata.acquire_data(country.country, date_ini=date_ini, date_end=date_end, is_drop_na=False,
-                                          start_after_new_cases=0)
-    run_plot_and_soc(country_objs, columns, points_betw_days, report)
+    country_objs = [getdata.CountryData(country=country, date_ini=date_ini, date_end=date_end, do_dropna=False,
+                                        start_after_new_cases=0, acquire_tests=True) for country in country_list]
+    run_plot_and_soc(country_objs, points_betw_days, report)
 
 
 if __name__ == "__main__":
     doc = createdocument.ReportDocument()
-    country_list = ["Brazil", "Italy"]
-    country_objs = [getdata.CountryData(country=country, auto_aquire_data=False) for country in country_list]
-    run(country_objs, ['new_cases', 'new_deaths', 'new_tests'], doc, '2020-03-18', '2020-06-05', 23)
+    countries = ["Brazil", "Italy"]
+    run(doc, '2020-03-18', '2020-06-05', 23, countries)
     doc.finish()
     print("Finished ", __file__)

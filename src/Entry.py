@@ -18,6 +18,11 @@ country_objs = [getdata.CountryData(country=country) for country in country_list
 # Add cullen-Frey charts:
 exercise_2_1.run(country_objs, report)
 
+# exercise_2_2.run(country_objs, report)
+# exercise_2_2b.run(country_objs, report)
+# exercise_2_2c.run(country_objs, report)
+# exercise_2_2d.run(country_objs, report)
+
 # Add ICMSF-Covid-19 predictions:
 # exercise_3.run(country_list, doc=report)
 
@@ -25,7 +30,8 @@ exercise_2_1.run(country_objs, report)
 # exercise_4.makePredict_v2(df["new_cases"], country, doc=report)
 
 # SOC in days and hours
-#exercise_5.run(country_objs, ['new_cases', 'new_deaths', 'new_tests'], report, '2020-03-18', '2020-06-05', 23)
+exercise_5.run(report, '2020-03-18', '2020-06-05', 23,
+               country_list)
 
 report.finish()
 

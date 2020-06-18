@@ -88,7 +88,7 @@ def makePredict(y, country, meandays=7, savegraphs=True, doc=None):
         plt.plot(range(len(y)-meandays), y[meandays:], label="Dados")
         plt.plot(range(len(Nk7)), Nk7, label="{} days means".format(meandays))
         plt.legend()
-        if savegraphs == True:
+        if savegraphs:
             plt.savefig("{}meananddata{}.png".format(country,pind))
         plt.draw()
         plt.figure()
@@ -101,10 +101,10 @@ def makePredict(y, country, meandays=7, savegraphs=True, doc=None):
         plt.plot(range(len(Nmin)), Nmin, label="Nmin")
         plt.plot(range(len(Nmax)), Nmax, label="Nmax")
         plt.legend()
-        if savegraphs == True:
+        if savegraphs:
             plt.savefig("{}originaldata{}.png".format(country,pind))
         plt.draw()
-        if(doc == None):
+        if doc is None:
             plt.show()
         else:
             doc.add_fig()
@@ -118,12 +118,12 @@ def makePredict(y, country, meandays=7, savegraphs=True, doc=None):
         plt.xlabel("Day")
         plt.ylabel("g")
         # plt.errorbar(range(len(g)), g, yerr=meang, xerr=0, hold=True, ecolor='k',
-                     # fmt='none', label='data', elinewidth=0.5, capsize=1)
+        # fmt='none', label='data', elinewidth=0.5, capsize=1)
         plt.plot(range(len(g)), g, 'o-')
-        if savegraphs == True:
+        if savegraphs:
             plt.savefig("{}originalg{}.png".format(country,pind))
         plt.draw()
-        if(doc == None):
+        if doc is None:
             plt.show()
         else:
             doc.add_fig()
@@ -133,16 +133,16 @@ def makePredict(y, country, meandays=7, savegraphs=True, doc=None):
         # means = abs(sum(s)/len(s)-s)
         plt.figure(figsize=(20, 10))
         plt.title("Values of s,\n p={}, {}, {}\n {}"
-                  .format(p[pind][0],p[pind][1],p[pind][2], country))
+                  .format(p[pind][0], p[pind][1], p[pind][2], country))
         plt.xlabel("Day")
         plt.ylabel("s")
         # plt.errorbar(range(len(s)), s, yerr=meang, xerr=0, hold=True, ecolor='k',
-                     # fmt='none', label='data', elinewidth=0.5, capsize=1)
+        # fmt='none', label='data', elinewidth=0.5, capsize=1)
         plt.plot(range(len(s)), s, 'o-')
-        if savegraphs == True:
+        if savegraphs:
             plt.savefig("{}originals{}.png".format(country,pind))
         plt.draw()
-        if(doc == None):
+        if doc is None:
             plt.show()
         else:
             doc.add_fig()
@@ -185,14 +185,14 @@ def makePredict(y, country, meandays=7, savegraphs=True, doc=None):
                  predictNmed[meandays:], c="orange", linestyle='--',
                  label="Predict Nmed")
         plt.legend()
-        if savegraphs == True:
+        if savegraphs:
             plt.savefig("{}predictmeananddata{}.png".format(country,pind))
         plt.draw()
-        if(doc == None):
+        if doc is None:
             plt.show()
         else:
             doc.add_fig()
-        predictg=np.array(predictg)
+        predictg = np.array(predictg)
         # meanpredictg = abs(sum(predictg)/len(predictg)-predictg)
         plt.figure(figsize=(20, 10))
         plt.title("Predict values of g,\n p={}, {}, {}, {}"
@@ -201,17 +201,17 @@ def makePredict(y, country, meandays=7, savegraphs=True, doc=None):
         plt.ylabel("g")
         plt.plot(range(len(g)), g, c="b", label="g from data")
         # plt.errorbar(range(len(g)), g, yerr=meang, xerr=0, hold=True, ecolor='k',
-                 # fmt='none', label='data', elinewidth=0.5, capsize=1)
+        # fmt='none', label='data', elinewidth=0.5, capsize=1)
         plt.plot(range(len(g)-1, len(g)+preddays-1), predictg, c="b",
                  linestyle='--', label="Generated g")
         # plt.errorbar(range(len(g)-1, len(g)+preddays-1), predictg,
-                     # yerr=meanpredictg, xerr=0, hold=True, ecolor='k',
-                     # fmt='none', label='data', elinewidth=0.5, capsize=1)
+        # yerr=meanpredictg, xerr=0, hold=True, ecolor='k',
+        # fmt='none', label='data', elinewidth=0.5, capsize=1)
         plt.legend()
-        if savegraphs == True:
+        if savegraphs:
             plt.savefig("{}predictg{}.png".format(country,pind))
         plt.draw()
-        if(doc == None):
+        if doc is None:
             plt.show()
         else:
             doc.add_fig()
@@ -234,7 +234,7 @@ def makePredict(y, country, meandays=7, savegraphs=True, doc=None):
         plt.ylabel("s")
         plt.plot(range(len(s)), s, c="b", label="s from data")
         # plt.errorbar(range(len(s)), s, yerr=means, xerr=0, hold=True, ecolor='k',
-                 # fmt='none', label='data', elinewidth=0.5, capsize=1)
+        # fmt='none', label='data', elinewidth=0.5, capsize=1)
         plt.plot(range(len(s)-1, len(s)+preddays-1), predicts, c="b",
                  linestyle='--', label="Generated s")
         # plt.errorbar(range(len(s)-1, len(s)+preddays-1), predicts,
@@ -249,11 +249,11 @@ def makePredict(y, country, meandays=7, savegraphs=True, doc=None):
         else:
             doc.add_fig()
 
+
 def main():
     fread = open("daily-cases-covid-19.csv", "r")
     next(fread)
-    
-    
+
     countrylist = ['Brazil,', 'Portugal,', 'Spain,', 'France,', 'Belgium,',
                    'United States,', 'Italy,', 'China,', 'South Korea,']
     

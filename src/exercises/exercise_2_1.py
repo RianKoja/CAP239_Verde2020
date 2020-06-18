@@ -31,6 +31,6 @@ def run(country_objs, report):
 
 if __name__ == "__main__":
     doc = createdocument.ReportDocument()
-    country_objs = [getdata.CountryData(country=country) for country in ["Brazil", "Italy"]]
-    run(country_objs, doc)
+    objs_list = [getdata.CountryData(country=country) for country in ["Brazil", "Italy"]]
+    run(objs_list, doc)
     plt.show()
