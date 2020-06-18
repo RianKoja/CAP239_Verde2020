@@ -72,7 +72,7 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
 
         '''
         plt.figure()
-        plt.title("Original Data with predictions,\n p={}, {}, {}\n {}"
+        plt.title("Original Data with predictions,\n p={}, {}, {}, {}"
                   .format(p[pind][0], p[pind][1], p[pind][2], country))
         plt.ylabel("New Cases")
         plt.xlabel("Days")
@@ -120,7 +120,7 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
             predict_nmed.append((w[0]*predict_nmin[-1]+w[1]*predict_nmax[-1])/sum(w))
             predictdeltank.append((predict_nk7[-1]-predict_nmed[-1])/predict_nmed[-1])
         plt.figure()
-        plt.title("Plot showing the prediction for the next {} days,\n p={}, {}, {}\n{}"
+        plt.title("Plot showing the prediction for the next {} days,\n p={}, {}, {}, {}"
                   .format(preddays, p[pind][0], p[pind][1], p[pind][2], country))
         plt.ylabel("New Cases")
         plt.xlabel("Days")
