@@ -19,12 +19,12 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
 
     '''
     Here we calculate the means by making a sublist from the original list and
-    summing its values, how many days will be determined by the variable MEANDAYS
-    and then we'll calculate G by this mean, using the value of a certain day
-    and this sum of MEANDAYS before.
-    After that, calculate n_min and n_max by the model. For n_guess we make a mean
-    between n_min and n_max, and Deltank is the MEANDAYS minus the actual day
-    divided by the actual day.
+    summing its values, how many days will be determined by the variable
+    MEANDAYS and then we'll calculate G by this mean, using the value of a
+    certain day and this sum of MEANDAYS before.
+    After that, calculate n_min and n_max by the model. For n_guess we make a
+    mean between n_min and n_max, and Deltank is the MEANDAYS minus the actual
+    day divided by the actual day.
     '''
     for pind in range(len(p)):
         # Starting the lists to store model values.
@@ -60,33 +60,17 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
                 deltag.append(g0-g[i] - (1-g[i])**2)
             else:
                 deltag.append(g0-g[i] + (1-g0)**2)
-        
+
         deltag = np.array(deltag)
         deltank = np.array(deltank)
         s = (2*deltag + deltank)/3
-        
+
         '''
         Now all the plottings, we are going to show how good the model works by
-        predicting data we already have, by plotting the variables n_min, n_max, n_guess
-        with the original data.
-        
-        '''
-        plt.figure()
-        plt.title("Graph with the data and the mean of 7 days for each data,\n p={}, {}, {}\n {}"
-                  .format(p[pind][0], p[pind][1], p[pind][2], country))
-        plt.ylabel("New Cases")
-        plt.xlabel("Days")
-        plt.plot(range(len(y)-meandays), y[meandays:], label="Dados")
-        plt.plot(range(len(nk7)), nk7, label="{} days means".format(meandays))
-        plt.legend()
-        if savegraphs:
-            plt.savefig("{}meananddata{}.png".format(country, pind))
-        plt.draw()
-        if doc is None:
-            plt.show()
-        else:
-            doc.add_fig()
+        predicting data we already have, by plotting the variables
+        n_min, n_max, n_guess with the original data.
 
+        '''
         plt.figure()
         plt.title("Original Data with predictions,\n p={}, {}, {}\n {}"
                   .format(p[pind][0], p[pind][1], p[pind][2], country))
@@ -94,8 +78,10 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
         plt.xlabel("Days")
         plt.plot(range(len(y)-meandays), y[meandays:], label="Dados")
         plt.plot(range(len(n_guess)), n_guess, label="Predict")
-        plt.plot(range(len(n_min)), n_min, label="n_min")
-        plt.plot(range(len(n_max)), n_max, label="n_max")
+        plt.fill_between(range(len(n_min)), n_min, n_max, alpha=0.2, color='limegreen',
+                         label=r'$N_{min}$ $N_{max}$ forecast band')
+        # plt.plot(range(len(n_min)), n_min, label="n_min")
+        # plt.plot(range(len(n_max)), n_max, label="n_max")
         plt.legend()
         if savegraphs:
             plt.savefig("{}originaldata{}.png".format(country, pind))
@@ -104,49 +90,12 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
             plt.show()
         else:
             doc.add_fig()
-        # Plotting the values of calculated g
-        
-        g = np.array(g)
-        plt.figure(figsize=(20, 10))
-        # meang = abs(sum(g)/len(g)-g)
-        plt.title("Values of g,\n p={}, {}, {}\n {}"
-                  .format(p[pind][0], p[pind][1], p[pind][2], country))
-        plt.xlabel("Day")
-        plt.ylabel("g")
-        # plt.errorbar(range(len(g)), g, yerr=meang, xerr=0, hold=True, ecolor='k',
-        # fmt='none', label='data', elinewidth=0.5, capsize=1)
-        plt.plot(range(len(g)), g, 'o-')
-        if savegraphs:
-            plt.savefig("{}originalg{}.png".format(country, pind))
-        plt.draw()
-        if doc is None:
-            plt.show()
-        else:
-            doc.add_fig()
-        # Plotting the values of calculated s
-        
-        s = np.array(s)
-        # means = abs(sum(s)/len(s)-s)
-        plt.figure(figsize=(20, 10))
-        plt.title("Values of s,\n p={}, {}, {}\n {}"
-                  .format(p[pind][0], p[pind][1], p[pind][2], country))
-        plt.xlabel("Day")
-        plt.ylabel("s")
-        # plt.errorbar(range(len(s)), s, yerr=meang, xerr=0, hold=True, ecolor='k',
-        # fmt='none', label='data', elinewidth=0.5, capsize=1)
-        plt.plot(range(len(s)), s, 'o-')
-        if savegraphs:
-            plt.savefig("{}originals{}.png".format(country, pind))
-        plt.draw()
-        if doc is None:
-            plt.show()
-        else:
-            doc.add_fig()
+
+
         '''
         Here we start to predict without the backup from original data, and we're going
         to show this by a dotted line.
         '''
-        
         preddays = 20  # How many days will be predicted
         predict_nmin = [n_min[-1]]  # Prediction of n_min
         predict_nmax = [n_max[-1]]  # Prediction of n_max
@@ -175,7 +124,7 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
                   .format(preddays, p[pind][0], p[pind][1], p[pind][2], country))
         plt.ylabel("New Cases")
         plt.xlabel("Days")
-        plt.plot(range(len(y)-meandays), y[meandays:], label="Dados")
+        # plt.plot(range(len(y)-meandays), y[meandays:], label="Dados")
         plt.plot(range(len(n_guess)), n_guess, label="Nmed", c="orange")
         plt.plot(range(len(y)-meandays-1, len(y)+preddays-meandays),
                  predict_nmed[meandays:], c="orange", linestyle='--',
@@ -190,27 +139,20 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
             doc.add_fig()
         predictg = np.array(predictg)
         # meanpredictg = abs(sum(predictg)/len(predictg)-predictg)
-        plt.figure(figsize=(20, 10))
-        plt.title("Predict values of g,\n p={}, {}, {}, {}"
+        fig, ax1 = plt.subplots()
+        ax1.set_title("Predict values of g and s,\n p={}, {}, {}, {}"
                   .format(p[pind][0], p[pind][1], p[pind][2], country))
-        plt.xlabel("Day")
-        plt.ylabel("g")
-        plt.plot(range(len(g)), g, c="b", label="g from data")
+        ax1.set_xlabel("Day")
+        ax1.set_ylabel("g")
+        ax1.plot(range(len(g)), g, c="black", label="g from data")
         # plt.errorbar(range(len(g)), g, yerr=meang, xerr=0, hold=True, ecolor='k',
         # fmt='none', label='data', elinewidth=0.5, capsize=1)
-        plt.plot(range(len(g)-1, len(g)+preddays-1), predictg, c="b",
+        ax1.plot(range(len(g)-1, len(g)+preddays-1), predictg, c="black",
                  linestyle='--', label="Generated g")
         # plt.errorbar(range(len(g)-1, len(g)+preddays-1), predictg,
         # yerr=meanpredictg, xerr=0, hold=True, ecolor='k',
         # fmt='none', label='data', elinewidth=0.5, capsize=1)
-        plt.legend()
-        if savegraphs:
-            plt.savefig("{}predictg{}.png".format(country, pind))
-        plt.draw()
-        if doc is None:
-            plt.show()
-        else:
-            doc.add_fig()
+        ax2 = ax1.twinx()
         predictdeltag = [0]
         for i in range(1, len(predictg)):
             g0 = predictg[i-1]
@@ -218,27 +160,23 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
                 predictdeltag.append(g0-predictg[i] - (1-predictg[i])**2)
             else:
                 predictdeltag.append(g0-predictg[i] + (1-g0)**2)
-        
         predictdeltag = np.array(predictdeltag)
         predictdeltank = np.array(predictdeltank)
         predicts = (2*predictdeltag + predictdeltank)/3
         # meanpredicts = abs(sum(predicts)/len(predicts)-predicts)
-        plt.figure(figsize=(20, 10))
-        plt.title("Predict values of s,\n p={}, {}, {}\n {}"
-                  .format(p[pind][0], p[pind][1], p[pind][2], country))
-        plt.xlabel("Day")
-        plt.ylabel("s")
-        plt.plot(range(len(s)), s, c="b", label="s from data")
+        ax2.set_xlabel("Day")
+        ax2.set_ylabel("s")
+        ax2.plot(range(len(s)), s, c="firebrick", label="s from data")
         # plt.errorbar(range(len(s)), s, yerr=means, xerr=0, hold=True, ecolor='k',
         # fmt='none', label='data', elinewidth=0.5, capsize=1)
-        plt.plot(range(len(s)-1, len(s)+preddays-1), predicts, c="b",
+        ax2.plot(range(len(s)-1, len(s)+preddays-1), predicts, c="firebrick",
                  linestyle='--', label="Generated s")
         # plt.errorbar(range(len(s)-1, len(s)+preddays-1), predicts,
         # yerr=meanpredicts, xerr=0, hold=True, ecolor='k',
         # fmt='none', label='data', elinewidth=0.5, capsize=1)
-        plt.legend()
-        if savegraphs:
-            plt.savefig("{}predicts{}.png".format(country, pind))
+        ax1.legend(loc='upper center', bbox_to_anchor=(1.3, 1))
+        ax2.legend(loc='upper center', bbox_to_anchor=(1.3, 0.8))
+        # plt.legend()
         plt.draw()
         if doc is None:
             plt.show()
@@ -252,29 +190,22 @@ def main():
 
     countrylist = ['Brazil,', 'Portugal,', 'Spain,', 'France,', 'Belgium,',
                    'United States,', 'Italy,', 'China,', 'South Korea,']
-    
     countrylist.sort()
-    
     for country in countrylist:
         y = []
-        
         for line in fread:
             ctr, code, m, yr, data = line.split(",")
             if int(data) > 50 and country in line and "excl." not in line:
                 break
-        
         for line in fread:
             if country in line and "excl." not in line:
                 ctr, code, m, yr, data = line.split(",")
                 y.append(int(data))
             if country in line and "May 20" in line:
                 break
-        
         country = country[:-1]
         make_predict(y, country, meandays=7, savegraphs=False)
-    
     fread.close()
-    
 
 if __name__ == "__main__":
     main()
