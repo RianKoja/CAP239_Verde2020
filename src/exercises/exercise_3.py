@@ -7,12 +7,12 @@ Created on Wed Jun 17 17:51:03 2020
 
 import matplotlib.pyplot as plt
 
-from tools import IMCSF_Covid_19, getdata, createdocument
+from tools import imcsf_covid_19, getdata, createdocument
 
 
 def run(country_objs, doc):
     for obj in country_objs:
-        IMCSF_Covid_19.make_predict(obj.df["new_cases"].to_list(), obj.country, savegraphs=False, doc=doc)
+        imcsf_covid_19.make_predict(obj.df["new_cases"].to_list(), obj.country, savegraphs=False, doc=doc)
 
 
 if __name__ == '__main__':

@@ -20,12 +20,10 @@ def makePredict_v2(y, country, doc=None):
             return 1
         else:
             return 2
-    
     glist = [0.20, 0.50, 0.80]
     p = [[0.5, 0.45, 0.05], [0.7, 0.25, 0.05]]
     pind = 1
     vals = [[1, 3, 5], [2, 4, 6]]
-    
     bestg = []
     bestguess = []
     Nminl = []
@@ -44,18 +42,20 @@ def makePredict_v2(y, country, doc=None):
         bestguess.append((Nminl[-1] + Nmaxl[-1]) / 2)
         bestg.append(glist[Nguess.index(min(Nguess))])
     plt.figure()
-    plt.title(country[:-1])
+    plt.title(country)
     plt.ylabel("New Cases")
     plt.xlabel("Days")
     plt.title("Data for {}".format(country))
-    plt.plot(range(len(y)), y, label="Dados")
+    plt.plot(range(len(y)), y, label="Data")
+    plt.fill_between(range(len(Nminl)), Nminl, Nmaxl, alpha=0.2,
+                     color='limegreen',
+                     label=r'$N_{min}$ $N_{max}$ forecast band')
     plt.plot(range(len(bestguess)), bestguess, label="Predict")
     # plt.plot(range(len(Nminl)), Nminl,label="Nmin")
     # plt.plot(range(len(Nmaxl)), Nmaxl,label="Nmax")
-    
     plt.legend()
     plt.draw()
-    if(doc == None):
+    if doc is None:
         plt.show()
     else:
         doc.add_fig()
@@ -65,17 +65,16 @@ def makePredict_v2(y, country, doc=None):
     plt.ylabel("g")
     plt.plot(range(len(bestg)), bestg)
     plt.draw()
-    if(doc == None):
+    if doc is None:
         plt.show()
     else:
-        doc.add_fig()    
+        doc.add_fig()
     # predicting
     predictNmin = [Nminl[-1]]
     predictNmax = [Nmaxl[-1]]
     prob1 = bestg.count(0.2)
     prob2 = bestg.count(0.5)
     total = len(y)
-    
     QTD = 1
     newglist = [bestg[-1]]
     media = []
@@ -94,11 +93,8 @@ def makePredict_v2(y, country, doc=None):
             predictNmed.append(glist[ind]*np.dot(n2, vals[0]))
             newglist.append(glist[ind])
         media.append(predictNmed)
-    
     I = (np.ones((QTD)))
     predictNmed = np.dot(I, media)/QTD
-    
-    
     plt.ylabel("New Cases")
     plt.xlabel("Days")
     plt.title("Prediction for {}\n{} days".format(country,pred))
@@ -114,8 +110,10 @@ def makePredict_v2(y, country, doc=None):
              c="orange", linestyle='--', label="Predict Nmed")
     plt.legend()
     plt.draw()
-    
-    
+    if doc is None:
+        plt.show()
+    else:
+        doc.add_fig()
     if QTD == 1:
         plt.figure()
         plt.title("Best values of g")
@@ -126,7 +124,7 @@ def makePredict_v2(y, country, doc=None):
                  linestyle='--', label="Generated g")
         plt.legend()
         plt.draw()
-        if(doc == None):
+        if doc is None:
             plt.show()
         else:
             doc.add_fig()
@@ -159,42 +157,33 @@ def makePredict_v2(y, country, doc=None):
         plt.xlabel("Days")
         plt.plot(range(len(s)), s)
         plt.draw()
-        if(doc == None):
+        if doc is None:
             plt.show()
         else:
             doc.add_fig()
 
 
-
 def main():
     fread = open("daily-cases-covid-19.csv", "r")
     next(fread)
-    
-
-    
     countrylist = ['Brazil,', 'Portugal,', 'Spain,', 'France,', 'Belgium,',
                    'United States,', 'Italy,', 'China,', 'South Korea,']
     countrylist.sort()
-    
     for country in countrylist:
         y = []
         for line in fread:
             ctr, code, m, yr, data = line.split(",")
             if int(data) > 50 and country in line and "excl." not in line:
                 break
-        
-        
         for line in fread:
             if country in line and "excl." not in line:
                 ctr, code, m, yr, data = line.split(",")
                 y.append(int(data))
             if country in line and "May 20" in line:
                 break
-        
-        
         makePredict_v2(y, country)
-    
     fread.close()
-    
+
+
 if __name__ == "__main__":
     main()
