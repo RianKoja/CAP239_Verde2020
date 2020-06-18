@@ -55,7 +55,7 @@ def makePredict_v2(y, country, doc=None):
     # plt.plot(range(len(Nmaxl)), Nmaxl,label="Nmax")
     plt.legend()
     plt.draw()
-    if(doc == None):
+    if doc is None:
         plt.show()
     else:
         doc.add_fig()
@@ -125,7 +125,7 @@ def makePredict_v2(y, country, doc=None):
                  linestyle='--', label="Generated g")
         plt.legend()
         plt.draw()
-        if(doc == None):
+        if doc is None:
             plt.show()
         else:
             doc.add_fig()
@@ -158,7 +158,7 @@ def makePredict_v2(y, country, doc=None):
         plt.xlabel("Days")
         plt.plot(range(len(s)), s)
         plt.draw()
-        if(doc == None):
+        if doc is None:
             plt.show()
         else:
             doc.add_fig()
