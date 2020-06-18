@@ -41,6 +41,7 @@ def makePredict_v2(y, country, doc=None):
         Nmaxl.append(Nmax[Nguess.index(min(Nguess))])
         bestguess.append((Nminl[-1] + Nmaxl[-1]) / 2)
         bestg.append(glist[Nguess.index(min(Nguess))])
+    plt.figure()
     plt.title(country)
     plt.ylabel("New Cases")
     plt.xlabel("Days")
@@ -58,6 +59,7 @@ def makePredict_v2(y, country, doc=None):
         plt.show()
     else:
         doc.add_fig()
+    plt.figure()
     plt.title("Best values of g\n country {}".format(country))
     plt.xlabel("Day")
     plt.ylabel("g")
@@ -93,7 +95,6 @@ def makePredict_v2(y, country, doc=None):
         media.append(predictNmed)
     I = (np.ones((QTD)))
     predictNmed = np.dot(I, media)/QTD
-    
     plt.ylabel("New Cases")
     plt.xlabel("Days")
     plt.title("Prediction for {}\n{} days".format(country,pred))
@@ -114,6 +115,7 @@ def makePredict_v2(y, country, doc=None):
     else:
         doc.add_fig()
     if QTD == 1:
+        plt.figure()
         plt.title("Best values of g")
         plt.xlabel("Day")
         plt.ylabel("g")
@@ -149,6 +151,7 @@ def makePredict_v2(y, country, doc=None):
             deltank.append((nb-nt)/nt)
         deltank = np.array(deltank)
         s = (2*deltag+deltank)/3
+        plt.figure()
         plt.title("Plot of s by time")
         plt.ylabel("s")
         plt.xlabel("Days")
@@ -160,36 +163,27 @@ def makePredict_v2(y, country, doc=None):
             doc.add_fig()
 
 
-
 def main():
     fread = open("daily-cases-covid-19.csv", "r")
     next(fread)
-    
-
-    
     countrylist = ['Brazil,', 'Portugal,', 'Spain,', 'France,', 'Belgium,',
                    'United States,', 'Italy,', 'China,', 'South Korea,']
     countrylist.sort()
-    
     for country in countrylist:
         y = []
         for line in fread:
             ctr, code, m, yr, data = line.split(",")
             if int(data) > 50 and country in line and "excl." not in line:
                 break
-        
-        
         for line in fread:
             if country in line and "excl." not in line:
                 ctr, code, m, yr, data = line.split(",")
                 y.append(int(data))
             if country in line and "May 20" in line:
                 break
-        
-        
         makePredict_v2(y, country)
-    
     fread.close()
-    
+
+
 if __name__ == "__main__":
     main()
