@@ -14,10 +14,11 @@ from tools import getdata, createdocument, cullen_frey_giovanni
 
 
 def run(country_objs, report):
+    report.add_heading("Cullen-Frey charts for each time series", level=3)
     country_list = [data.country for data in country_objs]
     for var in country_objs[0].df.columns:
         if var not in ['date', 'index']:
-            report.add_heading("Cullen-Frey for " + var)
+            report.add_heading("Cullen-Frey for " + var, level=4)
             skews = list()
             kurt = list()
             for obj in country_objs:
