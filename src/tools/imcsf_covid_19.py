@@ -76,7 +76,7 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
                   .format(p[pind][0], p[pind][1], p[pind][2], country))
         plt.ylabel("New Cases")
         plt.xlabel("Days")
-        plt.plot(range(len(y)-meandays), y[meandays:], label="Dados")
+        plt.plot(range(len(y)-meandays), y[meandays:], label="New Daily Cases")
         plt.plot(range(len(n_guess)), n_guess, label="Predict")
         plt.fill_between(range(len(n_min)), n_min, n_max, alpha=0.2, color='limegreen',
                          label=r'$N_{min}$ $N_{max}$ forecast band')
