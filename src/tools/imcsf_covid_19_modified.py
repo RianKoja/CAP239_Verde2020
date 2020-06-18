@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from numpy.random import uniform
 
 
-def makePredict_v2(y, country, doc=None):
+def make_predict_v2(y, country, doc=None):
     def rndg(prob1, prob2, total):
         if(uniform() < prob1/total):
             return 0
@@ -181,7 +181,7 @@ def main():
                 y.append(int(data))
             if country in line and "May 20" in line:
                 break
-        makePredict_v2(y, country)
+        make_predict_v2(y, country)
     fread.close()
 
 
