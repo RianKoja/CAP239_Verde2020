@@ -15,12 +15,12 @@ Created on Wed Jun 17 17:51:03 2020
 
 import matplotlib.pyplot as plt
 
-from tools import IMCSF_Covid_19_modified, getdata, createdocument
+from tools import imcsf_covid_19_modified, getdata, createdocument
 
 
 def run(country_objs, doc):
     for obj in country_objs:
-        IMCSF_Covid_19_modified.make_predict_v2(obj.df["new_cases"].to_list(),
+        imcsf_covid_19_modified.make_predict_v2(obj.df["new_cases"].to_list(),
                                     obj.country, doc=doc)
 
 
