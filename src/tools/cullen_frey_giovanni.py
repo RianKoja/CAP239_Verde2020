@@ -31,7 +31,7 @@ def cullenfrey(skews, kurt, legend, title):
     fig, ax = plt.subplots()
     ax.add_patch(poly)
     colors = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple', 'tab:brown', 'tab:pink', 'tab:gray',
-              'tab:olive', 'tab:cyan']
+              'tab:olive', 'tab:cyan', 'black']
     for xx, yy, label, color, in zip(xd, yd, legend, colors):
         ax.plot(xx, yy, marker="o", label=label, linestyle='', c=color)
     ax.plot(0, 4.187999875999753, label="logistic", marker='+', c='black', linestyle='None')
