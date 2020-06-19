@@ -26,7 +26,6 @@ def run(countrylist, doc=None):
             plt.plot(range(min(m1)), range(min(m1)), label="y=x")
         except:
             print("No tests")
-        plt.savefig(country+".png")
         plt.draw()
         if doc is None:
             plt.show()
