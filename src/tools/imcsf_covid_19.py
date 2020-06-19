@@ -171,6 +171,7 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
             plt.show()
         else:
             doc.add_fig()
+        plt.close('all')
 
 
 def main():
@@ -195,6 +196,7 @@ def main():
         country = country[:-1]
         make_predict(y, country, meandays=7, savegraphs=False)
     fread.close()
+
 
 if __name__ == "__main__":
     main()
