@@ -26,6 +26,24 @@ def run(countrylist, doc=None):
             plt.plot(range(min(m1)), range(min(m1)), label="y=x")
         except:
             print("no tests\n")
+        plt.legend()
+        plt.draw()
+        if doc is None:
+            plt.show()
+        else:
+            doc.add_fig()
+        plt.figure()
+        plt.xlabel("Total Cases")
+        plt.grid("both")
+        plt.ylabel("Total Tests")
+        plt.title(country)
+        plt.plot(df['total_cases'], df['total_tests'], 'o', label="Data")
+        try:
+            m1 = [int(max(df['total_tests'])), int(max(df['total_cases']))]
+            plt.plot(range(min(m1)), range(min(m1)), label="y=x")
+        except:
+            print("no tests\n")
+        plt.legend()
         plt.draw()
         if doc is None:
             plt.show()
