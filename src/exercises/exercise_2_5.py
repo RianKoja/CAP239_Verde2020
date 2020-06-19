@@ -25,7 +25,7 @@ def run(countrylist, doc=None):
             plt.plot(df['new_cases'], df['new_tests'], 'o', label="Data")
             plt.plot(range(min(m1)), range(min(m1)), label="y=x")
         except:
-            next(country)
+            print("No tests")
         plt.savefig(country+".png")
         plt.draw()
         if doc is None:
