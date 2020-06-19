@@ -15,9 +15,10 @@ print("Started ", __file__)
 report = createdocument.ReportDocument()
 country_list = ["Brazil", "Portugal", "Spain", "France", "Belgium", "United States", "Italy", "China", "South Korea"]
 brazilian_states = ['AM', 'CE']
-country_objs = [getdata.CountryData(country=country) for country in country_list]
-state_objs = [getdata.CountryData(brazil_state=state) for state in brazilian_states]
-data_objs = country_objs + state_objs
+country_objs = [getdata.CovidData(country=country) for country in country_list]
+state_objs = [getdata.CovidData(brazil_state=state) for state in brazilian_states]
+favela_objs = [getdata.CovidData()]
+data_objs = country_objs + state_objs + favela_objs
 
 # Plot time series:
 exercise_1.run(data_objs, report)

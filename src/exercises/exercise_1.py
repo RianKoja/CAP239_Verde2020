@@ -16,9 +16,9 @@ def run(country_objs, report):
             ax = None
             for obj in country_objs:
                 if ax is None:
-                    ax = obj.df.plot(x='date', y=var, label=obj.country)
+                    ax = obj.df.plot(x='date', y=var, label=obj.location)
                 else:
-                    obj.df.plot(x='date', y=var, label=obj.country, ax=ax)
+                    obj.df.plot(x='date', y=var, label=obj.location, ax=ax)
             plt.grid('both')
             plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
             plt.title('Time series of ' + var.replace("_", " ").title() + ' for selected countries')
@@ -29,7 +29,7 @@ def run(country_objs, report):
 
 if __name__ == "__main__":
     doc = createdocument.ReportDocument()
-    objs_list = [getdata.CountryData(country=country) for country in ["Brazil", "Italy"]]
+    objs_list = [getdata.CovidData(country=country) for country in ["Brazil", "Italy"]]
     run(objs_list, doc)
     plt.show()
 

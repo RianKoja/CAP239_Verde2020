@@ -21,7 +21,6 @@ import pandas as pd
             
 def run(country_objs, report):
     parameters = ['var', 'skew', 'kurt']
-    # country_list = [data.country for data in country_objs]
     for var in country_objs[0].df.columns:
         if var not in ['date', 'index', 'new_tests']:
             stat_df = pd.DataFrame(columns=parameters)
@@ -40,8 +39,7 @@ def run(country_objs, report):
                 
                 df_aux = pd.DataFrame([[vari, assi, curt]], columns=parameters)
                 stat_df = stat_df.append(df_aux, ignore_index=True, sort=False)
-            
-            # country_list = [data.country for data in country_objs]
+
             kmeans_silhouette.plot_k_means(stat_df, parameters, report, var)
                 
             plt.close("all")
@@ -51,7 +49,7 @@ if __name__ == "__main__":
     doc = createdocument.ReportDocument()
     country_list = ["Brazil", "Portugal", "Spain", "France", "Belgium", "United States", "Italy", "China",
                     "South Korea"]
-    country_objs = [getdata.CountryData(country=country) for country in country_list]
+    country_objs = [getdata.CovidData(country=country) for country in country_list]
     run(country_objs, doc)
     
     doc.finish()

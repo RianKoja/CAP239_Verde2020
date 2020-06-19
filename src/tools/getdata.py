@@ -11,16 +11,19 @@ import pandas as pd
 
 
 # Use this class to create a list of countries:
-class CountryData:
-    def __init__(self, country=None, brazil_state='AM', acquire_tests=False, do_dropna=True, date_ini='2020-01-10',
+class CovidData:
+    def __init__(self, country=None, brazil_state=None, acquire_tests=False, do_dropna=True, date_ini='2020-01-10',
                  date_end='2020-05-20', start_after_new_cases=50):
-        if country is None:
-            self.country = brazil_state
+        if brazil_state is not None:
+            self.location = brazil_state
             self.df = acquire_brazilian_states(state=brazil_state)
-        else:
-            self.country = country
+        elif country is not None:
+            self.location = country
             self.df = acquire_data(country=country, acquire_tests=acquire_tests, do_dropna=do_dropna, date_ini=date_ini,
                                    date_end=date_end, start_after_new_cases=start_after_new_cases)
+        else:
+            self.location = 'Rocinha'
+            self.df = acquire_rocinha()
 
 
 # Use this function to yield the dataframe to be analyzed.
@@ -68,7 +71,7 @@ def acquire_data(country='United States', date_ini='2020-02-10', date_end='2020-
     return df
 
 
-def acquire_brazilian_states(state='AM', date_ini='2020-02-10', date_end='2020-05-20',):
+def acquire_brazilian_states(state='AM', date_ini='2020-02-10', date_end='2020-05-20'):
     csv_filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'mount', 'cases-brazil-states.csv')
 
     if os.path.isfile(csv_filename):  # Read the csv file:
@@ -94,21 +97,40 @@ def acquire_brazilian_states(state='AM', date_ini='2020-02-10', date_end='2020-0
     return df
 
 
+def acquire_rocinha(date_ini='2020-02-10', date_end='2020-05-20'):
+    from operator import itemgetter
+    csv_filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'mount', 'rocinha.csv')
+
+    if not os.path.isfile(csv_filename):  # Read the csv file:
+        print("File not found for Rocinha data, check this, it should have been submitted in the repository.")
+        exit(4)
+    df = pd.read_csv(csv_filename)
+    df = df[['datas', 'confirmados', 'confirmados_acum', 'obitos_acum']]
+    df['date'] = df['datas'].apply(lambda x: "2020-" + '-'.join(itemgetter(1, 0)(x.split('/'))))
+
+    df['total_cases'] = df['confirmados_acum']
+    df['new_cases'] = df['confirmados']
+    df['total_deaths'] = df['obitos_acum']
+    total_deaths = df['total_deaths'].to_list()
+    daily_death = [0] + [x - total_deaths[i - 1] for i, x in enumerate(total_deaths)][1:]
+    df['new_deaths'] = daily_death
+    df.drop(['datas', 'confirmados', 'confirmados_acum', 'obitos_acum'], axis=1, inplace=True)
+    df['date'] = pd.to_datetime(df['date'])
+    # Separate date interval:
+    df = df[df.date.between(date_ini, date_end, inclusive=True)]
+    return df
+
+
 if __name__ == "__main__":
 
-    acquire_brazilian_states()
-    exit(3)
-    objs_list = [CountryData(country=country) for country in ["Brazil"]]
-    print("objs_list =", objs_list)
-    print("objs_list[0] =", objs_list[0])
-    print("objs_list[0].country =", objs_list[0].country)
-    print("objs_list[0].df =", objs_list[0].df)
+    acquire_rocinha()
 
-    objs_list = [CountryData(country=country, acquire_tests=True) for country in ["Italy"]]
-    print("objs_list =", objs_list)
-    print("objs_list[0] =", objs_list[0])
-    print("objs_list[0].country =", objs_list[0].country)
-    print("objs_list[0].df =", objs_list[0].df)
+    acquire_brazilian_states()
+
+    objs_list = [CovidData(country=country) for country in ["Brazil"]]
+
+    objs_list2 = [CovidData(country=country, acquire_tests=True) for country in ["Italy"]]
+
 
 
 

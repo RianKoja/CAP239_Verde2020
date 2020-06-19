@@ -18,7 +18,6 @@ from tools import elbow_yb
 
 
 def run(country_objs, report):
-    # country_list = [data.country for data in country_objs]
     for var in country_objs[0].df.columns:
         if var not in ['date', 'index', 'new_tests']:
             stat_data = []
@@ -38,9 +37,9 @@ def run(country_objs, report):
                 stat_data.append([vari, assi, curt])
                 i_lista += 1
             
-            country_list = [data.country for data in country_objs]
-            num_k = elbow_yb.makeK(stat_data,country_list,'Elbow - '+var,report)
-            print(num_k) #num_k será a entrada para a análise k-means
+            country_list = [data.location for data in country_objs]
+            num_k = elbow_yb.makeK(stat_data, country_list, 'Elbow - '+var, report)
+            print(num_k) # num_k será a entrada para a análise k-means
             report.add_fig()
                 
             plt.close("all")
@@ -51,7 +50,7 @@ def run(country_objs, report):
 
 if __name__ == "__main__":
     doc = createdocument.ReportDocument()
-    country_objs = [getdata.CountryData(country=country) for country in ["Brazil", "Portugal", "Spain", "France", "Belgium", "United States", "Italy", "China", "South Korea"]]
+    country_objs = [getdata.CovidData(country=country) for country in ["Brazil", "Portugal", "Spain", "France", "Belgium", "United States", "Italy", "China", "South Korea"]]
     run(country_objs, doc)
     
     doc.finish()

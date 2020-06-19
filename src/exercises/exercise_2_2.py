@@ -16,7 +16,7 @@ from tools import stat, plot_ajuste
             
 def run(country_objs, report):
     report.add_heading("Estimating Probability Density Functions", level=3)
-    country_list = [data.country for data in country_objs]    
+    country_list = [data.location for data in country_objs]
     for var in country_objs[0].df.columns:
         if var not in ['date', 'index', 'total_deaths', 'total_cases']:
             # Add title for info to be analyzed:
@@ -24,11 +24,11 @@ def run(country_objs, report):
             # run for countries to group graphs by country and data type:
             for obj in country_objs:
                 sinal = obj.df[var].to_list()
-                plot_ajuste.plotajuste_completo(sinal, 30, var+" PDF Adjustment \n"+obj.country)
+                plot_ajuste.plotajuste_completo(sinal, 30, var+" PDF Adjustment \n"+obj.location)
                 plt.grid('both')
                 plt.legend()
                 report.add_fig()
-                plot_ajuste.plothistograma(sinal, 30, var+" Histogram \n"+obj.country)
+                plot_ajuste.plothistograma(sinal, 30, var+" Histogram \n"+obj.location)
                 plt.grid('both')
                 report.add_fig()
                 
@@ -37,7 +37,7 @@ def run(country_objs, report):
 
 if __name__ == "__main__":
     doc = createdocument.ReportDocument()
-    data_objs = [getdata.CountryData(country=country) for country in ["Brazil", "Italy"]]
+    data_objs = [getdata.CovidData(country=country) for country in ["Brazil", "Italy"]]
     run(data_objs, doc)
     
     doc.finish()

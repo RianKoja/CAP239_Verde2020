@@ -21,7 +21,7 @@ def run_plot_and_soc(country_objs, points_in_series_num, report):
         soc_plot.init_plot()
         for country_obj in country_objs:
             country_values = country_obj.df[column].to_list()
-            plt.plot(range(len(country_values)), country_values, label=country_obj.country)
+            plt.plot(range(len(country_values)), country_values, label=country_obj.location)
             plt.title(title)
             plt.xlabel('Days')
             plt.ylabel(column.capitalize())
@@ -37,8 +37,8 @@ def run_plot_and_soc(country_objs, points_in_series_num, report):
             df_country_time = series_tools.generate_values_in_serie(country_obj.df, [column], points_in_series_num,
                                                                     is_random=True)
             list_points_in_series = df_country_time[column].to_list()
-            dic_country_time[country_obj.country] = list_points_in_series
-            plt.plot(range(len(list_points_in_series)), list_points_in_series, label=country_obj.country)
+            dic_country_time[country_obj.location] = list_points_in_series
+            plt.plot(range(len(list_points_in_series)), list_points_in_series, label=country_obj.location)
             plt.title(title)
             plt.xlabel('hours')
             plt.ylabel(column)
@@ -51,7 +51,7 @@ def run_plot_and_soc(country_objs, points_in_series_num, report):
         soc_plot.init_plot()
         for country_obj in country_objs:
             try:
-                soc_plot.addplot(country_obj.df[column].to_list(), country_obj.country)
+                soc_plot.addplot(country_obj.df[column].to_list(), country_obj.location)
             except ValueError:
                 pass
         soc_plot.plot(title)
@@ -62,7 +62,7 @@ def run_plot_and_soc(country_objs, points_in_series_num, report):
         soc_plot.init_plot()
         for country_obj in country_objs:
             try:
-                soc_plot.addplot(dic_country_time[country_obj.country], country_obj.country)
+                soc_plot.addplot(dic_country_time[country_obj.location], country_obj.location)
             except ValueError:
                 pass
         soc_plot.plot(title)
@@ -72,8 +72,8 @@ def run_plot_and_soc(country_objs, points_in_series_num, report):
 def run(report, date_ini, date_end, points_betw_days, country_list):
     title = "SOC plot for all countries. Date from {} to {}".format(date_ini, date_end)
     report.add_paragraph(title)
-    country_objs = [getdata.CountryData(country=country, date_ini=date_ini, date_end=date_end, do_dropna=False,
-                                        start_after_new_cases=0, acquire_tests=True) for country in country_list]
+    country_objs = [getdata.CovidData(country=country, date_ini=date_ini, date_end=date_end, do_dropna=False,
+                                      start_after_new_cases=0, acquire_tests=True) for country in country_list]
     run_plot_and_soc(country_objs, points_betw_days, report)
 
 

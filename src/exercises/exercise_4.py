@@ -13,12 +13,12 @@ from tools import imcsf_covid_19_modified, getdata, createdocument
 def run(country_objs, doc):
     for obj in country_objs:
          imcsf_covid_19_modified.make_predict_v2(obj.df["new_cases"].to_list(),
-                                    obj.country, doc=doc)
+                                    obj.location, doc=doc)
 
 
 if __name__ == '__main__':
     countries = ["Brazil", "Italy"]
-    obj_list = [getdata.CountryData(country=country) for country in countries]
+    obj_list = [getdata.CovidData(country=country) for country in countries]
     report = createdocument.ReportDocument()
     run(obj_list, report)
     report.finish()

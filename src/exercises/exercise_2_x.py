@@ -22,11 +22,11 @@ def run(countries_obj, doc):
                 line = plt.gca().get_lines()[0]
                 xd.append(line.get_xdata())
                 yd.append(line.get_ydata())
-                label_list.append(obj.country)
+                label_list.append(obj.location)
                 numbers_float = [alpha_dfa, stats['LH_min'], stats['LH_max'], stats['delta_alpha'], stats['alpha_zero'],
                                  stats['a_alpha'], stats['Psi']]
                 numbers_text = ['{:.2f}'.format(x) for x in numbers_float]
-                df_aux = pd.DataFrame([[obj.country] + numbers_text], columns=parameters)
+                df_aux = pd.DataFrame([[obj.location] + numbers_text], columns=parameters)
                 plt.close('all')
                 df_table = df_table.append(df_aux, ignore_index=True, sort=False)
 
@@ -46,7 +46,7 @@ def run(countries_obj, doc):
 
 if __name__ == '__main__':
     countries = ["Brazil", "Portugal", "Spain", "France", "Belgium", "United States", "Italy", "China", "South Korea"]
-    obj_list = [getdata.CountryData(country=country) for country in countries]
+    obj_list = [getdata.CovidData(country=country) for country in countries]
     report = createdocument.ReportDocument()
     run(obj_list, report)
     report.finish()
