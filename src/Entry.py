@@ -5,8 +5,8 @@
 
 # Local imports:
 from tools import createdocument, getdata
-from exercises import exercise_1, exercise_2_1, exercise_2_2, exercise_2_5, exercise_2_x, exercise_3, exercise_4
-from exercises import exercise_5
+from exercises import exercise_1, exercise_2_1, exercise_2_2, exercise_2_2b_alt, exercise_2_5
+from exercises import exercise_2_x, exercise_3, exercise_4, exercise_5
 
 
 print("Started ", __file__)
@@ -16,16 +16,16 @@ report = createdocument.ReportDocument()
 country_list = ["Brazil", "Portugal", "Spain", "France", "Belgium", "United States", "Italy", "China", "South Korea"]
 country_objs = [getdata.CountryData(country=country) for country in country_list]
 
-report.add_heading("Item 2", level=2)
-
 # Plot time series:
 exercise_1.run(country_objs, report)
 
+report.add_heading("Item 2", level=2)
 # Add cullen-Frey charts:
 exercise_2_1.run(country_objs, report)
 
 exercise_2_2.run(country_objs, report)
 # exercise_2_2b.run(country_objs, report)
+exercise_2_2b_alt.run(country_objs, report)
 # exercise_2_2c.run(country_objs, report)
 # exercise_2_2d.run(country_objs, report)
 # Add NDC x NDT graphs

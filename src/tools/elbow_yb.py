@@ -14,21 +14,22 @@ from mpl_toolkits.mplot3d import Axes3D
 from yellowbrick.cluster import KElbowVisualizer
 from sklearn.cluster import KMeans
 
+
 def makeK(d,ilist, title,report):
     #d: sinal contendo variância, assimetria e curtose já calculados
     #ilist: nome de cada sinal
     #title: título do gráfico
     print(ilist)
     d=np.array(d)
-    kk=pd.DataFrame({'Variance': d[:,0], 'Skewness': d[:,1], 'Kurtosis': d[:,2]})
+    kk=pd.DataFrame({'Variance': d[:, 0], 'Skewness': d[:, 1], 'Kurtosis': d[:, 2]})
     K=10
-    model=KMeans()
-    visualizer = KElbowVisualizer(model, k=(1,K))
-    kIdx=visualizer.fit(kk)        # Fit the data to the visualizer
-    visualizer.show()
+    model = KMeans()
+    visualizer = KElbowVisualizer(model, k=(1, K))
+    kIdx = visualizer.fit(kk)        # Fit the data to the visualizer
+    # visualizer.show()
     report.add_fig()        # Finalize and render the figure
     kIdx=kIdx.elbow_value_
-    model=KMeans(n_clusters=kIdx).fit(kk)
+    model = KMeans(n_clusters=kIdx).fit(kk)
     
     # scatter plot
     fig = plt.figure()

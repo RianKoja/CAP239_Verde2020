@@ -7,10 +7,12 @@ from tools import getdata, createdocument
 
 
 def run(country_objs, report):
-    report.add_heading("Time Series charts for each variable", level=3)
-    country_list = [data.country for data in country_objs]
+    report.add_heading("Item 1", level=2)
+    report.add_heading("Time Series Plots", level=3)
+    report.add_paragraph("Here we plot the time series charts for the variables under investigation.")
     for var in country_objs[0].df.columns:
         if var not in ['date', 'index']:
+            report.add_heading("Plot for " + var, level=4)
             ax = None
             for obj in country_objs:
                 if ax is None:

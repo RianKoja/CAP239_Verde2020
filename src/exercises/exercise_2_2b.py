@@ -17,19 +17,17 @@ from tools import elbow_yb
 #import pandas as pd
 
 
-            
-            
 def run(country_objs, report):
-    #country_list = [data.country for data in country_objs]    
+    # country_list = [data.country for data in country_objs]
     for var in country_objs[0].df.columns:
         if var not in ['date', 'index', 'new_tests']:
             stat_data = []
-            #adicionar o título do tipo de informação analisada
+            # adicionar o título do tipo de informação analisada
             report.add_heading("Data Type: " + var)
-            #corre os países para agrupar os gráficos dos países por coluna analisada
+            # corre os países para agrupar os gráficos dos países por coluna analisada
             i_lista = 0
             for obj in country_objs:
-                #Calcula Variância / Assimetria / Curtose para cada 
+                # Calcula Variância / Assimetria / Curtose para cada
                 sinal = obj.df[var].to_list()
                 mapper = interp1d([min(sinal), max(sinal)], [0, 1])
                 sinal_norm = mapper(sinal)
@@ -57,8 +55,6 @@ if __name__ == "__main__":
     run(country_objs, doc)
     
     doc.finish()
-    
-    plt.show()
     
     plt.show()
     

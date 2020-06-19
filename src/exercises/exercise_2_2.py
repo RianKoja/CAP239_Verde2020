@@ -15,11 +15,12 @@ from tools import stat, plot_ajuste
             
             
 def run(country_objs, report):
+    report.add_heading("Estimating Probability Density Functions", level=3)
     country_list = [data.country for data in country_objs]    
     for var in country_objs[0].df.columns:
         if var not in ['date', 'index', 'total_deaths', 'total_cases']:
             # Add title for info to be analyzed:
-            report.add_heading("Data Type: " + var)
+            report.add_heading("Data Type: " + var, level=4)
             # run for countries to group graphs by country and data type:
             for obj in country_objs:
                 sinal = obj.df[var].to_list()
