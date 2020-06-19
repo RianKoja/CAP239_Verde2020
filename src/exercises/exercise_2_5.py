@@ -26,6 +26,7 @@ def run(countrylist, doc=None):
             plt.plot(range(min(m1)), range(min(m1)), label="y=x")
         except:
             print("no tests\n")
+        plt.legend()
         plt.draw()
         if doc is None:
             plt.show()
