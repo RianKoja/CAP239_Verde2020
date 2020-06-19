@@ -59,7 +59,7 @@ def acquire_data(country='United States', date_ini='2020-02-10', date_end='2020-
         if df.loc[ii, 'new_cases'] >= start_after_new_cases:
             df = df.drop(range(0, max([0, ii])))
             break
-
+    df['date'] = pd.to_datetime(df['date'])
     # df.to_excel('test_df.xlsx') # Use to visualize selected data in excel.
     return df
 

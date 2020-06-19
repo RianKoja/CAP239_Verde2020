@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 def run(countrylist, doc=None):
     countrylist.sort()
     for country in countrylist:
-        df = getdata.acquire_data(country, include_tests=True)
+        df = getdata.acquire_data(country, acquire_tests=True)
         plt.figure()
         plt.xlabel("New Daily Cases")
         plt.grid("both")

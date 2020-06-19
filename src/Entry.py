@@ -5,7 +5,8 @@
 
 # Local imports:
 from tools import createdocument, getdata
-from exercises import exercise_2_1, exercise_2_2, exercise_2_5, exercise_2_x, exercise_3, exercise_4, exercise_5
+from exercises import exercise_1, exercise_2_1, exercise_2_2, exercise_2_5, exercise_2_x, exercise_3, exercise_4
+from exercises import exercise_5
 
 
 print("Started ", __file__)
@@ -16,6 +17,9 @@ country_list = ["Brazil", "Portugal", "Spain", "France", "Belgium", "United Stat
 country_objs = [getdata.CountryData(country=country) for country in country_list]
 
 report.add_heading("Item 2", level=2)
+
+# Plot time series:
+exercise_1.run(country_objs, report)
 
 # Add cullen-Frey charts:
 exercise_2_1.run(country_objs, report)
