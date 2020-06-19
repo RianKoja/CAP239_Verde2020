@@ -26,7 +26,6 @@ def makeK(d,ilist, title,report):
     visualizer = KElbowVisualizer(model, k=(1,K))
     kIdx=visualizer.fit(kk)        # Fit the data to the visualizer
     visualizer.show()
-    plt.draw()
     report.add_fig()        # Finalize and render the figure
     kIdx=kIdx.elbow_value_
     model=KMeans(n_clusters=kIdx).fit(kk)

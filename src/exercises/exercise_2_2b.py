@@ -20,10 +20,10 @@ from tools import elbow_yb
             
             
 def run(country_objs, report):
-    stat_data = []
     #country_list = [data.country for data in country_objs]    
     for var in country_objs[0].df.columns:
         if var not in ['date', 'index', 'new_tests']:
+            stat_data = []
             #adicionar o título do tipo de informação analisada
             report.add_heading("Data Type: " + var)
             #corre os países para agrupar os gráficos dos países por coluna analisada
@@ -31,7 +31,6 @@ def run(country_objs, report):
             for obj in country_objs:
                 #Calcula Variância / Assimetria / Curtose para cada 
                 sinal = obj.df[var].to_list()
-                print(sinal)
                 mapper = interp1d([min(sinal), max(sinal)], [0, 1])
                 sinal_norm = mapper(sinal)
                 
@@ -54,10 +53,12 @@ def run(country_objs, report):
 
 if __name__ == "__main__":
     doc = createdocument.ReportDocument()
-    country_objs = [getdata.CountryData(country=country) for country in ["Brazil", "Italy"]]
+    country_objs = [getdata.CountryData(country=country) for country in ["Brazil", "Portugal", "Spain", "France", "Belgium", "United States", "Italy", "China", "South Korea"]]
     run(country_objs, doc)
     
     doc.finish()
+    
+    plt.show()
     
     plt.show()
     
