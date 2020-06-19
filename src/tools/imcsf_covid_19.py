@@ -53,17 +53,17 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
                 deltank.append(np.nan)
 
         # Calculating deltag to calculate s and plot
-        deltag = [0]
-        for i in range(1, len(g)):
-            g0 = g[i-1]
-            if g0 < g[i]:
-                deltag.append(g0-g[i] - (1-g[i])**2)
-            else:
-                deltag.append(g0-g[i] + (1-g0)**2)
+        # deltag = [0]
+        # for i in range(1, len(g)):
+        #     g0 = g[i-1]
+        #     if g0 < g[i]:
+        #         deltag.append(g0-g[i] - (1-g[i])**2)
+        #     else:
+        #         deltag.append(g0-g[i] + (1-g0)**2)
 
-        deltag = np.array(deltag)
-        deltank = np.array(deltank)
-        s = (2*deltag + deltank)/3
+        # deltag = np.array(deltag)
+        # deltank = np.array(deltank)
+        s = 1-np.array(g)
 
         '''
         Now all the plottings, we are going to show how good the model works by
@@ -72,13 +72,19 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
 
         '''
         plt.figure()
-        plt.title("Original Data with predictions,\n p={}, {}, {}, {}"
+        plt.title("Original Data with predictions,\n p={}, {}, {}\n {}"
                   .format(p[pind][0], p[pind][1], p[pind][2], country))
         plt.ylabel("New Cases")
         plt.xlabel("Days")
-        plt.plot(range(len(y)-meandays), y[meandays:], label="New Daily Cases")
-        plt.plot(range(len(n_guess)), n_guess, label="Predict")
-        plt.fill_between(range(len(n_min)), n_min, n_max, alpha=0.2, color='limegreen',
+        if country == "Brazil":
+            ploty = np.array(y)*12
+            plt.plot(range(len(ploty)-meandays), ploty[meandays:], 
+                     label="Real Data with subnotification factor")
+        else:
+            plt.plot(range(len(y)-meandays), y[meandays:], label="Real Data")
+        plt.plot(range(len(n_guess)), n_guess, label="Mean between Nmin and Nmax")
+        plt.fill_between(range(len(n_min)), n_min, n_max, alpha=0.2,
+                         color='limegreen',
                          label=r'$N_{min}$ $N_{max}$ forecast band')
         # plt.plot(range(len(n_min)), n_min, label="n_min")
         # plt.plot(range(len(n_max)), n_max, label="n_max")
@@ -90,17 +96,18 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
             plt.show()
         else:
             doc.add_fig()
-        plt.close('all')
+
 
         '''
-        Here we start to predict without the backup from original data, and we're going
-        to show this by a dotted line.
+        Here we start to predict without the backup from original data, and
+        we're going to show this by a dotted line.
         '''
+
         preddays = 20  # How many days will be predicted
         predict_nmin = [n_min[-1]]  # Prediction of n_min
         predict_nmax = [n_max[-1]]  # Prediction of n_max
         predictg = []  # g calculated with the prediction
-        predict_nmed = y[-meandays-1:]  # Starting the prediction with real data
+        predict_nmed = list(y[-meandays-1:])  # Starting the prediction with real data
         predict_nk7 = []  # The meandays list to the prediction
         predictdeltank = []  # The Delta NK list to the prediction
         for i in range(meandays, preddays+meandays):
@@ -120,7 +127,7 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
             predict_nmed.append((w[0]*predict_nmin[-1]+w[1]*predict_nmax[-1])/sum(w))
             predictdeltank.append((predict_nk7[-1]-predict_nmed[-1])/predict_nmed[-1])
         plt.figure()
-        plt.title("Plot showing the prediction for the next {} days,\n p={}, {}, {}, {}"
+        plt.title("Plot showing the prediction for the next {} days,\n p={}, {}, {}\n{}"
                   .format(preddays, p[pind][0], p[pind][1], p[pind][2], country))
         plt.ylabel("New Cases")
         plt.xlabel("Days")
@@ -137,47 +144,27 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
             plt.show()
         else:
             doc.add_fig()
-        plt.close('all')
         predictg = np.array(predictg)
         # meanpredictg = abs(sum(predictg)/len(predictg)-predictg)
         fig, ax1 = plt.subplots()
         ax1.set_title("Predict values of g and s,\n p={}, {}, {}, {}"
-                  .format(p[pind][0], p[pind][1], p[pind][2], country))
+                      .format(p[pind][0], p[pind][1], p[pind][2], country))
         ax1.set_xlabel("Day")
         ax1.set_ylabel("g")
-        ax1.plot(range(len(g)), g, c="black", label="g from data")
-        # plt.errorbar(range(len(g)), g, yerr=meang, xerr=0, hold=True, ecolor='k',
-        # fmt='none', label='data', elinewidth=0.5, capsize=1)
+        ax1.plot(range(len(g)), g, c="black", label="g from real data")
         ax1.plot(range(len(g)-1, len(g)+preddays-1), predictg, c="black",
                  linestyle='--', label="Generated g")
-        # plt.errorbar(range(len(g)-1, len(g)+preddays-1), predictg,
-        # yerr=meanpredictg, xerr=0, hold=True, ecolor='k',
-        # fmt='none', label='data', elinewidth=0.5, capsize=1)
         ax2 = ax1.twinx()
-        predictdeltag = [0]
-        for i in range(1, len(predictg)):
-            g0 = predictg[i-1]
-            if g0 < predictg[i]:
-                predictdeltag.append(g0-predictg[i] - (1-predictg[i])**2)
-            else:
-                predictdeltag.append(g0-predictg[i] + (1-g0)**2)
-        predictdeltag = np.array(predictdeltag)
-        predictdeltank = np.array(predictdeltank)
-        predicts = (2*predictdeltag + predictdeltank)/3
+
+        predicts = 1 - np.array(predictg)
         # meanpredicts = abs(sum(predicts)/len(predicts)-predicts)
         ax2.set_xlabel("Day")
         ax2.set_ylabel("s")
-        ax2.plot(range(len(s)), s, c="firebrick", label="s from data")
-        # plt.errorbar(range(len(s)), s, yerr=means, xerr=0, hold=True, ecolor='k',
-        # fmt='none', label='data', elinewidth=0.5, capsize=1)
+        ax2.plot(range(len(s)), s, c="firebrick", label="s from real data")
         ax2.plot(range(len(s)-1, len(s)+preddays-1), predicts, c="firebrick",
                  linestyle='--', label="Generated s")
-        # plt.errorbar(range(len(s)-1, len(s)+preddays-1), predicts,
-        # yerr=meanpredicts, xerr=0, hold=True, ecolor='k',
-        # fmt='none', label='data', elinewidth=0.5, capsize=1)
         ax1.legend(loc='upper center', bbox_to_anchor=(1.3, 1))
         ax2.legend(loc='upper center', bbox_to_anchor=(1.3, 0.8))
-        plt.tight_layout()
         # plt.legend()
         plt.draw()
         if doc is None:
