@@ -5,7 +5,7 @@
 
 # Local imports:
 from tools import createdocument, getdata
-from exercises import exercise_2_1, exercise_2_2, exercise_2_x, exercise_3, exercise_4, exercise_5
+from exercises import exercise_2_1, exercise_2_2, exercise_2_5, exercise_2_x, exercise_3, exercise_4, exercise_5
 
 
 print("Started ", __file__)
@@ -24,7 +24,8 @@ exercise_2_2.run(country_objs, report)
 # exercise_2_2b.run(country_objs, report)
 # exercise_2_2c.run(country_objs, report)
 # exercise_2_2d.run(country_objs, report)
-
+# Add NDC x NDT graphs
+exercise_2_5.run(country_list, report)
 # Check for multi-fractality properties:
 exercise_2_x.run(country_objs, report)
 
