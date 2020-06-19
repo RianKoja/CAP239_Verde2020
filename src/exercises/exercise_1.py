@@ -21,7 +21,7 @@ def run(country_objs, report):
                     obj.df.plot(x='date', y=var, label=obj.location, ax=ax)
             plt.grid('both')
             plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-            plt.title('Time series of ' + var.replace("_", " ").title() + ' for selected countries')
+            plt.title('Time series of ' + var.replace("_", " ").title() + ' for selected locations')
             plt.tight_layout()
             plt.draw()
             report.add_fig()
