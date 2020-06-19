@@ -29,7 +29,8 @@ def run(country_objs, report):
 
 if __name__ == "__main__":
     doc = createdocument.ReportDocument()
-    objs_list = [getdata.CovidData(country=country) for country in ["Brazil", "Italy"]]
+    objs_list = [getdata.CovidData(country=country) for country in ["Brazil", "Italy", "China"]]
+    objs_list += [getdata.CovidData()]
     run(objs_list, doc)
     plt.show()
 
