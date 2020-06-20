@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from numpy.random import uniform
 
 
-def make_predict_v2(y, country, doc=None):
+def makePredict_v2(y, country, doc=None):
     def rndg(prob1, prob2, total):
         if(uniform() < prob1/total):
             return 0
@@ -46,7 +46,7 @@ def make_predict_v2(y, country, doc=None):
     plt.ylabel("New Cases")
     plt.xlabel("Days")
     plt.title("Data for {}".format(country))
-    plt.plot(range(len(y)), y, label="New Daily Cases")
+    plt.plot(range(len(y)), y, label="Data")
     plt.fill_between(range(len(Nminl)), Nminl, Nmaxl, alpha=0.2,
                      color='limegreen',
                      label=r'$N_{min}$ $N_{max}$ forecast band')
@@ -63,7 +63,10 @@ def make_predict_v2(y, country, doc=None):
     plt.title("Best values of g\n country {}".format(country))
     plt.xlabel("Day")
     plt.ylabel("g")
-    plt.plot(range(len(bestg)), bestg)
+    plt.plot(range(len(bestg)), bestg, label=" fitted g", c="firebrick")
+    plt.grid("both")
+    plt.legend()
+    plt.tight_layout()
     plt.draw()
     if doc is None:
         plt.show()
@@ -94,12 +97,11 @@ def make_predict_v2(y, country, doc=None):
             newglist.append(glist[ind])
         media.append(predictNmed)
     I = (np.ones((QTD)))
-    plt.figure()
     predictNmed = np.dot(I, media)/QTD
     plt.ylabel("New Cases")
     plt.xlabel("Days")
     plt.title("Prediction for {}\n{} days".format(country,pred))
-    plt.plot(range(len(y)), y, label="New Daily Cases")
+    plt.plot(range(len(y)), y, label="Dados")
     plt.plot(range(len(bestguess)), bestguess, label="Nmed", c="orange")
     # plt.plot(range(len(Nminl)), Nminl,label="Nmin", c="orange")
     # plt.plot(range(len(Nmaxl)), Nmaxl,label="Nmax", c="red")
@@ -115,55 +117,43 @@ def make_predict_v2(y, country, doc=None):
         plt.show()
     else:
         doc.add_fig()
-    plt.close('all')
     if QTD == 1:
         plt.figure()
-        plt.title("Best values of g")
+        plt.title("Best values of g,\n country {}".format(country))
         plt.xlabel("Day")
         plt.ylabel("g")
-        plt.plot(range(len(bestg)), bestg, c="b", label="fitted g")
-        plt.plot(range(len(bestg)-1, len(bestg)+pred), newglist, c="b",
-                 linestyle='--', label="Generated g")
+        plt.plot(range(len(bestg)), bestg, label="fitted g", c="firebrick")
+        plt.plot(range(len(bestg)-1, len(bestg)+pred), newglist,
+                 linestyle='--', label="Generated g", c="firebrick")
         plt.legend()
+        plt.grid("both")
+        plt.tight_layout()
         plt.draw()
         if doc is None:
             plt.show()
         else:
             doc.add_fig()
-        plt.close('all')
+
         bestguess.pop()
         bestg.pop()
         bestguess = bestguess+list(predictNmed)
-        bestg = bestg+list(newglist)
-        deltag = []
-        for i in range(1, len(bestg)):
-            g = bestg[i]
-            g0 = bestg[i-1]
-            if g > g0:
-                deltag.append(g0-g-(1-g)**2)
-            else:
-                deltag.append(g0-g+(1-g0)**2)
-        deltag = np.array(deltag)
-        deltank = []
-        for i in range(1, len(bestguess)):
-            nb = bestguess[i-1]
-            nt = bestguess[i]
-            if nt == 0:
-                nt = np.nan
-            deltank.append((nb-nt)/nt)
-        deltank = np.array(deltank)
-        s = (2*deltag+deltank)/3
+        preds = 1-np.array(newglist)
+        s = 1 - np.array(bestg)
         plt.figure()
-        plt.title("Plot of s by time")
+        plt.title("Plot of s by time,\n country {}".format(country))
         plt.ylabel("s")
         plt.xlabel("Days")
-        plt.plot(range(len(s)), s)
+        plt.plot(range(len(s)), s, label="fitted s", c="firebrick")
+        plt.plot(range(len(s)-1, len(s)+pred), preds, '--',
+                 label="Generated s", c="firebrick")
+        plt.grid("both")
+        plt.legend()
+        plt.tight_layout()
         plt.draw()
         if doc is None:
             plt.show()
         else:
             doc.add_fig()
-        plt.close('all')
 
 
 def main():
@@ -184,7 +174,7 @@ def main():
                 y.append(int(data))
             if country in line and "May 20" in line:
                 break
-        make_predict_v2(y, country)
+        makePredict_v2(y, country)
     fread.close()
 
 
