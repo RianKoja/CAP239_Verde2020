@@ -166,6 +166,7 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
         ax1.legend(loc='upper center', bbox_to_anchor=(1.3, 1))
         ax2.legend(loc='upper center', bbox_to_anchor=(1.3, 0.8))
         # plt.legend()
+        plt.grid("both")
         plt.draw()
         if doc is None:
             plt.show()
