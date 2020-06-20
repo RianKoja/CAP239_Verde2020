@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from numpy.random import uniform
 
 
-def makePredict_v2(y, country, doc=None):
+def make_predict_v2(y, country, doc=None):
     def rndg(prob1, prob2, total):
         if(uniform() < prob1/total):
             return 0
