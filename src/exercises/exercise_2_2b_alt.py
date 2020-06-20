@@ -63,7 +63,8 @@ def run(country_objs, report):
             kmeans_silhouette.plot_k_means(stat_df, parameters, report, var + " - Normalized Signal")
             
             # plot the K-Means for the normalized statistical moments
-            kmeans_silhouette.plot_k_means(stat_df_norm, parameters, report, var + " - Normalized Stastistical Moments")
+            kmeans_silhouette.plot_k_means(stat_df_norm, parameters, report, var +
+                                           " - Normalized Statistical Parameters")
 
             plt.close("all")
             

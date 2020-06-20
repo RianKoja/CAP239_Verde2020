@@ -59,13 +59,14 @@ def run(countrylist, doc=PlaceHolderDoc()):
             plt.plot(x_regression, y_regression, label="regression")
             plt.title(country + "\n" + 'Regression: y = {:.4f} x + {:.4f}'.format(slope, intercept) + "\n" +
                       'Correlation Coefficient: {:.4f}  Standard Error: {:.4f}'.format(rvalue, stderr))
+            plt.legend()
+            plt.tight_layout()
+            plt.draw()
+            doc.add_fig()
         except:
-            plt.title(country)
+            pass
 
-        plt.legend()
 
-        plt.draw()
-        doc.add_fig()
 
         plt.figure()
         plt.plot(df['total_cases'], df['total_tests'], 'o', label="Data")
@@ -79,15 +80,17 @@ def run(countrylist, doc=PlaceHolderDoc()):
             plt.title(
                 country + "\n" + 'Regression: y = {:.4f} exp (-{:.4g} x) + {:.4f}'.format(popt[0], -popt[1], popt[2]) +
                 "\n" + 'Fit covariances: {:.4f} | {:.4g} | {:.4f}'.format(diag_cov[0], diag_cov[1], diag_cov[2]))
-        except:
-            plt.title(country)
+            plt.legend()
+            plt.tight_layout()
+            plt.xlabel("Total Cases")
+            plt.grid("both")
+            plt.ylabel("Total Tests")
+            plt.draw()
+            doc.add_fig()
 
-        plt.legend()
-        plt.xlabel("Total Cases")
-        plt.grid("both")
-        plt.ylabel("Total Tests")
-        plt.draw()
-        doc.add_fig()
+        except:
+            pass
+
 
 
 if __name__ == '__main__':
