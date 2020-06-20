@@ -91,6 +91,7 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
         plt.legend()
         if savegraphs:
             plt.savefig("{}originaldata{}.png".format(country, pind))
+        plt.tight_layout()
         plt.draw()
         if doc is None:
             plt.show()
@@ -139,6 +140,7 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
         plt.legend()
         if savegraphs:
             plt.savefig("{}predictmeananddata{}.png".format(country, pind))
+        plt.tight_layout()
         plt.draw()
         if doc is None:
             plt.show()
