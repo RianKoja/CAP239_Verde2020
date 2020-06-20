@@ -36,6 +36,6 @@ def plot(label):
     plt.grid('both')
     plt.xlabel('log(ni)')
     plt.ylabel('log(Yi)')
-    plt.title("SOC for " + label)
+    plt.title(label)
     plt.tight_layout()
     plt.draw()
