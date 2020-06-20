@@ -146,7 +146,7 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
             doc.add_fig()
         predictg = np.array(predictg)
         # meanpredictg = abs(sum(predictg)/len(predictg)-predictg)
-        fig, ax1 = plt.subplots()
+        fig, ax1 = plt.subplots(figsize=(10, 6))
         ax1.set_title("Predict values of g and s,\n p={}, {}, {}, {}"
                       .format(p[pind][0], p[pind][1], p[pind][2], country))
         ax1.set_xlabel("Day")
@@ -163,17 +163,17 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
         ax2.plot(range(len(s)), s, c="firebrick", label="s from real data")
         ax2.plot(range(len(s)-1, len(s)+preddays-1), predicts, c="firebrick",
                  linestyle='--', label="Generated s")
-        ax1.legend(loc='upper center', bbox_to_anchor=(1.5, 1))
-        ax2.legend(loc='upper center', bbox_to_anchor=(1.5, 0.8))
+        # ax1.legend(loc='upper center', bbox_to_anchor=(0.8, 1))
+        # ax2.legend(loc='upper center', bbox_to_anchor=(0.8, 0.8))
+        ax1.legend(loc='upper right')
+        ax2.legend(loc='lower right')
         # plt.legend()
-        plt.grid("both")
         plt.tight_layout()
         plt.draw()
         if doc is None:
             plt.show()
         else:
             doc.add_fig()
-        plt.close('all')
 
 
 def main():
@@ -198,7 +198,6 @@ def main():
         country = country[:-1]
         make_predict(y, country, meandays=7, savegraphs=False)
     fread.close()
-
 
 if __name__ == "__main__":
     main()
