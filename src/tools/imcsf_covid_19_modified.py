@@ -98,6 +98,7 @@ def make_predict_v2(y, country, doc=None):
         media.append(predictNmed)
     I = (np.ones((QTD)))
     predictNmed = np.dot(I, media)/QTD
+    plt.figure()
     plt.ylabel("New Cases")
     plt.xlabel("Days")
     plt.title("Prediction for {}\n{} days".format(country,pred))
