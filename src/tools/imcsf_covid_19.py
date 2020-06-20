@@ -163,8 +163,8 @@ def make_predict(y, country, meandays=7, savegraphs=True, doc=None):
         ax2.plot(range(len(s)), s, c="firebrick", label="s from real data")
         ax2.plot(range(len(s)-1, len(s)+preddays-1), predicts, c="firebrick",
                  linestyle='--', label="Generated s")
-        ax1.legend(loc='upper center', bbox_to_anchor=(1.3, 1))
-        ax2.legend(loc='upper center', bbox_to_anchor=(1.3, 0.8))
+        ax1.legend(loc='upper center', bbox_to_anchor=(1.5, 1))
+        ax2.legend(loc='upper center', bbox_to_anchor=(1.5, 0.8))
         # plt.legend()
         plt.grid("both")
         plt.tight_layout()
