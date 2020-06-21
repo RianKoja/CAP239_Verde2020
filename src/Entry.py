@@ -27,13 +27,15 @@ report.add_heading("Item 2", level=2)
 # Add cullen-Frey charts:
 exercise_2_1.run(data_objs, report)
 
+# Fit PSDs over data and plot histogram:
 exercise_2_2.run(data_objs, report)
-# exercise_2_2b.run(country_objs, report)
+
+# K-Means clustering:
 exercise_2_2b_alt.run(country_objs, report)
-# exercise_2_2c.run(country_objs, report)
-# exercise_2_2d.run(country_objs, report)
+
 # Add NDC x NDT graphs
 exercise_2_5.run(country_list, report)
+
 # Check for multi-fractality properties:
 exercise_2_x.run(data_objs, report)
 
@@ -49,6 +51,7 @@ exercise_4.run(data_objs, doc=report)
 report.add_heading("Item 5", level=2)
 exercise_5.run(report, '2020-03-18', '2020-06-05', 23, country_list)
 
+# Finish the report document
 report.finish()
 
 print("Finished ", __file__)

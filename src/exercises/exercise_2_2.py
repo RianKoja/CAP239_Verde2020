@@ -2,7 +2,7 @@
 # Plot Probability Density Functions for Time series.
 #
 #
-# Written by Renato BRanco and adapted by Rian Koja to publish in a GitHub repository with specified licence.
+# Written by Renato Branco and adapted by Rian Koja to publish in a GitHub repository with specified licence.
 ########################################################################################################################
 
 # Standard imports:

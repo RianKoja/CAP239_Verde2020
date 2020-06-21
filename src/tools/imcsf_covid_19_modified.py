@@ -118,6 +118,7 @@ def make_predict_v2(y, country, doc=None):
         plt.show()
     else:
         doc.add_fig()
+        plt.close('all')
     if QTD == 1:
         plt.figure()
         plt.title("Best values of g,\n country {}".format(country))
@@ -134,6 +135,7 @@ def make_predict_v2(y, country, doc=None):
             plt.show()
         else:
             doc.add_fig()
+            plt.close('all')
 
         bestguess.pop()
         bestg.pop()
@@ -155,6 +157,7 @@ def make_predict_v2(y, country, doc=None):
             plt.show()
         else:
             doc.add_fig()
+            plt.close('all')
 
 
 def main():
@@ -175,7 +178,7 @@ def main():
                 y.append(int(data))
             if country in line and "May 20" in line:
                 break
-        makePredict_v2(y, country)
+        make_predict_v2(y, country)
     fread.close()
 
 
