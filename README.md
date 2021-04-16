@@ -20,3 +20,4 @@ Start XLaunch as described in  https://dev.to/darksmile92/run-gui-app-in-linux-d
 
 Run the following command in a PowerShell window:
 `.\warun.ps1 <dirname>`
+ 
